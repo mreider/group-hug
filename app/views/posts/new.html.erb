@@ -1,19 +1,20 @@
-<h1>Post a wall message to: <%= @group.name %></h1>
+<h3>Post a wall message to: <%= @group.name %></h3>
 
 <% form_tag  url_for(group_posts_path(@group.id)), :method=>:post do -%>
  
   
   <%= hidden_field_tag 'group_id', @group.id %>
   
-  <div class="field">
+  <p>
     <%= text_area_tag 'message', nil, :rows => 10, :cols => 60 %>
-  </div>
-  <div class="field">
+  </p>
+  <p>
     <%= check_box_tag 'send_via_email', 'yes', true %> Send the whole group an email
-  </div>
-  <div class="actions">
+  </p>
+  <p>
     <%= submit_tag 'Save' %>
-  </div>
+  </p>
 <% end -%>
- 
+ <p>
 <%= link_to 'Back', url_for(groups_path) %>
+</p>
