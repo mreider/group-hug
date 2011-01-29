@@ -11,11 +11,10 @@
 </head>
 <body>
 	
-  	<div id="content">
-		<div id="logo">
-				<h1><a href="#">Group Hug</a></h1>
-				&nbsp;sponsored by <a href="http://engineyard.com">Engine Yard</a>
-						<p class="status">
+  	<div id="wrap">
+	<h1><a href="#">Group Hug</a></h1>
+	Sponsored by <a href="http://engineyard.com">Engine Yard</a>
+	<p>
 						<% if current_facebook_user !=nil %>
 							<%= fb_logout_link("Logout", request.url) %><br />
 							<% else
@@ -25,14 +24,11 @@
 							%>
 							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %>
 							<% end %>
-						</p>
-		</div>
-		<br/>
-		<div id="left">
+		</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
 		<br/>
 		<%= yield %>
-		</div>
+	
 	</div>	
 
   <%= fb_connect_async_js %>
