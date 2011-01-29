@@ -28,7 +28,8 @@ body {
 }
 
 .pic {
-    width:70px;	
+    width:70px;
+    float:left;
 }
  
 /* Links */
