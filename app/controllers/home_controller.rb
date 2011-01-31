@@ -9,8 +9,7 @@ class HomeController < ApplicationController
 
     if @user != nil 
       session[:user_id] = @user.id
-      redirect_to session[:return_to]||url_for(groups_path)
-      session[:return_to]=nil
+      redirect_to url_for(groups_path)
     else
       flash[:error] = "Unable to log you in"
       render :action=>"login"

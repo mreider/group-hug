@@ -1,26 +1,75 @@
 
 <% content_for (:javascript) do %>
+var def_group = '<%=@default_group%>';
 $(document).ready(function() {
+  // bind select group
   $('#group').bind('change', function() {
-	$('#posts_container').load('/groups/' + $(this).val() + '/posts',  function() {
-	  FB.XFBML.parse(document.getElementById('posts_container'));
-	});
+	loadData('/groups/' + $(this).val() + '/posts', null)
+
+	//check if current group is default and mark checkbox checked or not
+	$('#def_group').attr('checked', $(this).val() == def_group);
   });
 
-  $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
-    FB.XFBML.parse(document.getElementById('posts_container'));
-  });
-  
+  // preload default group
+  loadData('/groups/<%=@default_group%>/posts', null);
+
+  // bind checkbox change
   $('#def_group').bind('change', function() {
 	var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
 	$.post('/groups/default/' + group_id ,  function() {
 	  alert ('Default group was saved');
 	});
+	//chenge default group
+	def_group = group_id == 'nil' ? null : group_id;
   });
  
  
-
+    
   });  
+  
+  
+function loadData(rem_url, params) {
+  var temp = rem_url; 
+  if (params != null ) {
+    temp += '?' + params;
+  }
+  $('#loading_div').show();
+  
+  $.ajax({ url: temp,
+  dataType: 'json',
+  type: 'GET',
+  error: function(req,data) {
+    alert("Error dyring getting remote data: " + data);
+    $('#loading_div').hide();
+  },
+  success: function(data) {
+    $('#loading_div').hide();
+    $('#posts_container').html(data.html);
+	if (data.next != null) {
+		$('#next_btn').css('display', 'block');
+	    $('#next_btn').unbind('click');
+		$('#next_btn').click(function () { 
+			loadData(rem_url, 'next=' + data.next);
+		});
+	} else {
+		$('#next_btn').css('display', 'none');
+    }	
+	if (data.prev != null) {
+		$('#prev_btn').css('display', 'block');
+	    $('#prev_btn').unbind('click');
+		$('#prev_btn').click(function () { 
+			loadData(rem_url, 'next=' + data.prev);
+		});
+	} else {
+		$('#prev_btn').css('display', 'none');
+	}
+	FB.XFBML.parse(document.getElementById('posts_container'));
+  }
+  });
+
+}
+
+
 <% end %>
 <p>
 <select name="group" id="group" >
@@ -30,5 +79,11 @@ $(document).ready(function() {
 </select> <input id="def_group" name="def_group" type="checkbox" selected="false" /> Default group <br/>
 </p>
 
-<div id="posts_container" >Posts</div>
+<div id="posts_container" ></div>
+
+<div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %> Loading</div>
+
+<div id="prev_btn" style="display:none">Prev</div>
+
+<div id="next_btn" style="display:none">Next</div>
 
