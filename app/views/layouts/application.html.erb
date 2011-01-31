@@ -14,11 +14,12 @@
   	<div id="wrap">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
-		<td width="235"><h1><a href="http://icanhazrails.com">Group Hug</a></h1></td>
+		<td width="225"><h1><a href="http://icanhazrails.com">Group Hug</a></h1></td>
 		<td>Sponsored by <a href="http://engineyard.com">Engine Yard</a></td>
 	</tr>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
-		<td colspan="2">
+		<td width="730">
 			<p>
 						<% if current_facebook_user !=nil %>
 							<%= fb_logout_link("Logout", request.url) %><br />
@@ -27,12 +28,22 @@
 							# here we instruct facebook to ask the user for permission for our website
 							# to access the user's facebook email and birthday, groups,read_stream
 							%>
+							<div class="featured">
+								<h3>What is Group Hug?</h3>
+								<ol>
+									<li>A Ruby on Rails app for posting messages to Facebook groups</li>
+									<li>A friendly tutorial about how to build a simple Rails apps</li>
+							</div>
+							<img src="/images/eyulol.png">
 							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %>
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
 		<%= yield %>
 		</td>
+		</tr>
+		<tr>
+			<td>This </td>
 		</tr>
 	</table>
 	</div>	
