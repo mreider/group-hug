@@ -7,6 +7,7 @@ class GroupsController < ApplicationController
     @groups = current_facebook_user.groups
 	
 	#determine selected user group or get first group id if default group is not selected
+	puts @current_user.inspect
 	@default_group = @current_user.default_group
 	@default_group = @groups.first.id if @default_group.nil? && @groups.first != nil
   end
