@@ -36,11 +36,13 @@
 							<div class="featured">
 							<ol>
 								<li>A Ruby on Rails app for posting messages to Facebook groups</li>
-								<li>A friendly tutorial about how to build a simple Rails apps</li>
+								<li>A friendly tutorial on how to build a Facebook on Rails apps</li>
 							</ol>
 							</div>
 							<br clear="left"/>
-							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %>
+							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %> to use the app + post messages
+							<br clear="left">
+							<%= render :file => '/README.html' %>
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
