@@ -19,7 +19,7 @@
 	</tr>
 	<table cellpadding="0" cellspacing="5" border="0" width="100%">
 	<tr>
-		<td width="500" valign="top">
+		<td width="650" valign="top">
 			<p>
 						<% if current_facebook_user !=nil %>
 							<%= fb_logout_link("Logout", request.url) %><br />
@@ -42,12 +42,13 @@
 		<%= yield %>
 		</td>
 		<td><p>&nbsp;</p></td>
-		<td valign="top">
-			<img hspace="10" src="/images/eyuflag.jpg" align="left">
+		<td valign="top" width="290">
+			<img hspace="10" src="/images/eyuflag.jpg"/>
 			<h3>Engine Yard University</h3><br clear="left"/>
 			<h3>Want to learn Rails?</h3>
 			Visit <a href="http://engineyard.com/university">http://engineyard.com/university</a> for training courses, screencasts, and more.
-		</td>	
+		</td>
+		<td><p>&nbsp;</p></td>	
 		</tr>
 	</table>
 	</div>	
