@@ -42,7 +42,12 @@
 							<br clear="left"/>
 							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %> to use the app + post messages
 							<br clear="left">
-							<%= "My String".markdown %>
+							<%= "My String".markdown.html_safe
+							myfile = File.open("README.md")
+							$readme = String.new
+							myfile.each {|line| $readme << line}
+							$readme.markdown.html_safe
+							%>
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>

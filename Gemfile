@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.3'
 gem 'facebooker2'
 gem 'mysql2'
-gem 'rdiscount'
+gem "RedCloth", "= 4.2.2"
 gem 'json_pure', '= 1.4.3'
 
 # Bundle edge Rails instead:
