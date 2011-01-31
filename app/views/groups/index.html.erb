@@ -71,21 +71,19 @@ function loadData(rem_url, params) {
 
 
 <% end %>
-
-
+<p>
 <select name="group" id="group" >
 <% @groups.each do |group| %>
  <option value="<%=group.id%>" <%= 'selected' if @default_group == group.id %>><%=group.name%></option>
 <% end %>
-</select>
+</select> <input id="def_group" name="def_group" type="checkbox" selected="false" /> Default group <br/>
+</p>
 
-<br/>
-<input id="def_group" name="def_group" type="checkbox" selected="false" /> Default group <br/>
+<div id="posts_container" ></div>
 
-<div id="posts_container" >Posts</div>
+<div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %> Loading</div>
 
 <div id="prev_btn" style="display:none">Prev</div>
 
 <div id="next_btn" style="display:none">Next</div>
 
-<div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %> Loading</div>

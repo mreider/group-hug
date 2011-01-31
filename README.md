@@ -1,22 +1,15 @@
-The Plan to develop facebook connect application:
-================================
+Rails Tutorial + Facebook Connect
+=================================
 
-1. Install rails:
-
+* Install rails:
 	gem install rails
-
-2. Create rails app:
-
+* Create rails app:
 	rails new fbcomments
-
-3. Install facebooker2 as a plugin in your rails app.
-
+* Install facebooker2 as a plugin in your rails app.
 	script/rails plugin install git://github.com/mmangino/facebooker2.git
+* Create facebook application at http://www.facebook.com/developers/createapp.php and set the site URL to your application URL. For example, ours is http://icanhazrails.com/
 
-4. Create facebook application at http://www.facebook.com/developers/createapp.php
-   And set Site URL to your application URL: http://staging.operations.engineyard.com/
-
-5. Create config/facebooker.yml with the appropriate environment.
+* Create config/facebooker.yml with the appropriate environment.
 
 	development:
 		app_id: <your application id>
