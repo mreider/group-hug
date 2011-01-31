@@ -1,4 +1,6 @@
-h1. Tutorial on building a Facebook connect application:
+Rails Tutorial using Group Hug Example
+================================
+
 * Install rails:
 bq. gem install rails
 * Create rails app:
