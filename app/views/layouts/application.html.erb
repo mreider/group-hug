@@ -14,10 +14,14 @@
   	<div id="wrap">
 	<table cellpadding="0" cellspacing="5" border="0" width="100%">
 	<tr>
-		<td valign="bottom" width="300"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
-		<td valign="bottom">Sponsored by <a href="http://engineyard.com">Engine Yard University</a></td>
+		<td valign="top" width="650"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
+		<td valign="top" rowspan="2">
+			<img hspace="10" src="/images/eyuflag.jpg"/>
+			<h3>Engine Yard University</h3><br clear="left"/>
+			<h3>Want to learn Rails?</h3>
+			Visit <a href="http://engineyard.com/university">http://engineyard.com/university</a> for training courses, screencasts, and more.
+		</td>
 	</tr>
-	<table cellpadding="0" cellspacing="5" border="0" width="100%">
 	<tr>
 		<td width="650" valign="top">
 			<p>
@@ -41,14 +45,6 @@
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
 		<%= yield %>
 		</td>
-		<td><p>&nbsp;</p></td>
-		<td valign="top" width="290">
-			<img hspace="10" src="/images/eyuflag.jpg"/>
-			<h3>Engine Yard University</h3><br clear="left"/>
-			<h3>Want to learn Rails?</h3>
-			Visit <a href="http://engineyard.com/university">http://engineyard.com/university</a> for training courses, screencasts, and more.
-		</td>
-		<td><p>&nbsp;</p></td>	
 		</tr>
 	</table>
 	</div>	
