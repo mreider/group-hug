@@ -6,7 +6,7 @@ body {
 	text-align: center;
 }
  
-.featured {
+code, .featured {
 	clear: both;
 	background: #F8FAFD; 
 	border: 1px solid #DCF1FB;
