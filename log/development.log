@@ -379,3 +379,121 @@ ActionView::Template::Error (undefined method `raw' for "My String":String):
 Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.1ms)
 Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (5.4ms)
 Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (11.6ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:05:51 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (2.9ms)
+Completed 200 OK in 11ms (Views: 10.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:16:14 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (3.1ms)
+Completed 200 OK in 10ms (Views: 9.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:45:24 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (56.5ms)
+Completed   in 62ms
+
+ActionView::Template::Error (undefined method `safe_html' for "<p>Rails Tutorial + Facebook Connect</p>\n":String):
+    44: 							<br clear="left">
+    45: 							<%= "My String".markdown.html_safe
+    46: 							myfile = File.open("README.md")
+    47: 							myfile.each {|line| print line.markdown.safe_html }
+    48: 							%>
+    49: 							<% end %>
+    50: 						</p>
+  app/views/layouts/application.html.erb:47:in `_app_views_layouts_application_html_erb___873795511_2183556800_0'
+  app/views/layouts/application.html.erb:47:in `each'
+  app/views/layouts/application.html.erb:47:in `_app_views_layouts_application_html_erb___873795511_2183556800_0'
+
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.3ms)
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (6.1ms)
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (18.5ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:45:50 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (51.2ms)
+Completed 200 OK in 58ms (Views: 57.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:46:12 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (3.7ms)
+Completed   in 10ms
+
+ActionView::Template::Error (undefined method `to_string' for "Rails Tutorial + Facebook Connect\n":String):
+    44: 							<br clear="left">
+    45: 							<%= "My String".markdown.html_safe
+    46: 							myfile = File.open("README.md")
+    47: 							myfile.each {|line| print line.to_string.markdown.safe_html }
+    48: 							%>
+    49: 							<% end %>
+    50: 						</p>
+  app/views/layouts/application.html.erb:47:in `_app_views_layouts_application_html_erb___873795511_2181253360_0'
+  app/views/layouts/application.html.erb:47:in `each'
+  app/views/layouts/application.html.erb:47:in `_app_views_layouts_application_html_erb___873795511_2181253360_0'
+
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.0ms)
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (6.4ms)
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (12.6ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:46:39 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (10.2ms)
+Completed 200 OK in 20ms (Views: 17.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:47:06 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (20.5ms)
+Completed 200 OK in 27ms (Views: 26.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:47:18 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (4.3ms)
+Completed 200 OK in 13ms (Views: 12.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:50:04 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (24.1ms)
+Completed   in 31ms
+
+ActionView::Template::Error (undefined method `safe_html' for #<String:0x1043e6c00>):
+    46: 							myfile = File.open("README.md")
+    47: 							$readme = String.new
+    48: 							myfile.each {|line| $readme << line}
+    49: 							$readme.markdown.safe_html
+    50: 							%>
+    51: 							<% end %>
+    52: 						</p>
+  app/views/layouts/application.html.erb:49:in `_app_views_layouts_application_html_erb___873795511_2183165300_0'
+
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.1ms)
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (5.9ms)
+Rendered /Library/Ruby/Gems/1.8/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (12.5ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:50:28 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (5.4ms)
+Completed 200 OK in 13ms (Views: 12.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 13:59:07 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (4.9ms)
+Completed 200 OK in 11ms (Views: 10.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 14:02:34 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (22.3ms)
+Completed 200 OK in 29ms (Views: 28.6ms | ActiveRecord: 0.0ms)
