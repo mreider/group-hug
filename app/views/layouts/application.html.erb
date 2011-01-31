@@ -14,12 +14,12 @@
   	<div id="wrap">
 	<table cellpadding="0" cellspacing="5" border="0" width="100%">
 	<tr>
-		<td width="300"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
-		<td>Sponsored by <a href="http://engineyard.com">Engine Yard University</a></td>
+		<td valign="bottom" width="300"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
+		<td valign="bottom">Sponsored by <a href="http://engineyard.com">Engine Yard University</a></td>
 	</tr>
 	<table cellpadding="0" cellspacing="5" border="0" width="100%">
 	<tr>
-		<td width="500">
+		<td width="500" valign="top">
 			<p>
 						<% if current_facebook_user !=nil %>
 							<%= fb_logout_link("Logout", request.url) %><br />
@@ -34,15 +34,17 @@
 								<li>A friendly tutorial about how to build a simple Rails apps</li>
 							</ol>
 							</div>
+							<br clear="left"/>
 							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %>
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
 		<%= yield %>
 		</td>
-		<td>
-			<img hspace="10" src="/images/eyuflag.jpg"><br>
-			<h3>Engine Yard University</h3>
+		<td><p>&nbsp;</p></td>
+		<td valign="top">
+			<img hspace="10" src="/images/eyuflag.jpg" align="left">
+			<h3>Engine Yard University</h3><br clear="left"/>
 			<h3>Want to learn Rails?</h3>
 			Visit <a href="http://engineyard.com/university">http://engineyard.com/university</a> for training courses, screencasts, and more.
 		</td>	
