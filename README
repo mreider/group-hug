@@ -1,4 +1,6 @@
-<h1> Rails Tutorial using Group Hug Example</h1>
+Rails Tutorial using Group Hug Example
+================================
+
 * Install rails:
 bq. gem install rails
 * Create rails app:
