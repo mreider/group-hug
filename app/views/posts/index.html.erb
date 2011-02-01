@@ -1,16 +1,20 @@
 <p>
 <%= link_to "Post Message", url_for(new_group_post_path(@group.id)) %>
 </p>
+<p><%= link_to "See group at facebook", 'http://www.facebook.com/group.php?gid=' + @group.id %></p>
 <% @posts.each do |post| %>
-<div class="post">
-<span class="pic"><fb:profile-pic uid="<%=post.from.id%>" linked="false" size="q"></fb:profile-pic><br/>
-<%=post.from.first_name :last_name%> <%=post.from.last_name%>
-</span>
-<span>
-<%=post.message%><br/> 
-<%= time_ago_in_words(post.updated_time) %> ago
-</span>
-</div> 		
+ <% begin %>
+  <div class="post">
+  <span class="pic"><fb:profile-pic uid="<%=post.from.id if post.from !=nil%>" linked="false" size="q"></fb:profile-pic><br/>
+  <% from = post.from.fetch if post.from !=nil %> <%=from[:first_name] if from != nil %> <%=from[:last_name]  if from != nil %>
+  </span>
+  <span>
+  <%=post.message%><br/> 
+  <%= time_ago_in_words(post.updated_time) %> ago
+  </span>
+  </div> 		  
+ <% rescue %>  
+ <% end %>
 <% end %>
 
 <br/><br/>
