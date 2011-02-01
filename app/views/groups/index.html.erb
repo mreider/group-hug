@@ -47,8 +47,7 @@ function loadData(rem_url, params) {
     $('#loading_div').hide();
     $('#posts_container').html(data.html);
 	if (data.next != null) {
-		$('#next_btn').css('display', 'block');
-	    $('#next_btn').unbind('click');
+		$('#next_btn').unbind('click');
 		$('#next_btn').click(function () { 
 			loadData(rem_url, 'next=' + data.next);
 		});
@@ -56,8 +55,7 @@ function loadData(rem_url, params) {
 		$('#next_btn').css('display', 'none');
     }	
 	if (data.prev != null) {
-		$('#prev_btn').css('display', 'block');
-	    $('#prev_btn').unbind('click');
+		$('#prev_btn').unbind('click');
 		$('#prev_btn').click(function () { 
 			loadData(rem_url, 'next=' + data.prev);
 		});
