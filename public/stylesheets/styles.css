@@ -70,10 +70,10 @@ ul { list-style: disc; }
 ol { list-style: decimal; }
 
 .prvnxt  {
-	cursor:hand;
 	width:100px;
 	border:1px;
+	border-color:black;
 	padding:5px;
-	
+	color:black;	
 }
 
