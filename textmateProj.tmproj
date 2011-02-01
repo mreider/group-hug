@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>README.textile</string>
+	<string>app/views/groups/index.html.erb</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -63,6 +63,36 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>app/views/groups/index.html.erb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>2</integer>
+				<key>line</key>
+				<integer>58</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>35</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>41</integer>
+				<key>line</key>
+				<integer>58</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>2</integer>
+				<key>line</key>
+				<integer>58</integer>
+			</dict>
+		</dict>
 		<key>app/views/home/prereqs.html.erb</key>
 		<dict>
 			<key>caret</key>
@@ -89,7 +119,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>24</integer>
+			<integer>0</integer>
 		</dict>
 		<key>config/environment.rb</key>
 		<dict>
@@ -138,19 +168,21 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>13</integer>
+				<integer>7</integer>
 				<key>line</key>
-				<integer>65</integer>
+				<integer>71</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>38</integer>
+			<integer>45</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>app/views/layouts/application.html.erb</string>
+		<string>app/views/groups/index.html.erb</string>
+		<string>public/stylesheets/styles.css</string>
 		<string>Gemfile</string>
 		<string>config/environment.rb</string>
 		<string>config/initializers/markdown.rb</string>
@@ -158,11 +190,10 @@
 		<string>app/views/home/prereqs.html.erb</string>
 		<string>README.textile</string>
 		<string>config/routes.rb</string>
-		<string>public/stylesheets/styles.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{240, 122}, {1067, 592}}</string>
+	<string>{{207, 69}, {1102, 658}}</string>
 </dict>
 </plist>

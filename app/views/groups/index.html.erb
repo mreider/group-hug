@@ -40,7 +40,7 @@ function loadData(rem_url, params) {
   dataType: 'json',
   type: 'GET',
   error: function(req,data) {
-    alert("Error dyring getting remote data: " + data);
+    alert("Error getting remote data: " + data);
     $('#loading_div').hide();
   },
   success: function(data) {
@@ -84,9 +84,8 @@ function loadData(rem_url, params) {
 
 <div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %></div>
 
-<div>
-<span id="prev_btn" class="prvnxt" style="display:none">Prev</span>
+<div id="prev_btn" class="prvnxt" style="display:none">Prev</div>
 
-<span id="next_btn" class="prvnxt" style="display:none">Next</span>
-</div>
+<div id="next_btn" class="prvnxt" style="display:none">Next</div>
+
 
