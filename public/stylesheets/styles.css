@@ -11,8 +11,10 @@ code, .featured {
 	background: #F8FAFD; 
 	border: 1px solid #DCF1FB;
 	margin: 10px 0px 0px 15px;
-	padding-bottom: 10px;
-	width: 630px;			
+	padding-bottom: 5px;
+	padding-left:10px;
+	padding-top:5px;
+	width: 850px;			
 }
 
  
@@ -61,7 +63,7 @@ ul, ol {
 }
 ul { list-style: disc; }
 #wrap {
-	width: 950px;
+	width: 850px;
 	margin-left: 30px;
 	text-align: left;	
 }
