@@ -4,6 +4,7 @@ var def_group = '<%=@default_group%>';
 $(document).ready(function() {
   // bind select group
   $('#group').bind('change', function() {
+    $('#posts_container').html('<p>Loading...</p>');
 	loadData('/groups/' + $(this).val() + '/posts', null)
 
 	//check if current group is default and mark checkbox checked or not

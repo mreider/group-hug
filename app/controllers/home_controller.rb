@@ -1,6 +1,11 @@
 class HomeController < ApplicationController
    
   def login
+    # display readme
+	myfile = File.open("README.textile")
+	readme = String.new
+	myfile.each {|line| readme << line}
+	@readme_html = readme.markdown.html_safe
   end
 
   def create

@@ -3,8 +3,9 @@
 </p>
 <% @posts.each do |post| %>
 <div class="post">
-<%#=post.from.inspect%>
-<span class="pic"><fb:profile-pic uid="<%=post.from.id%>" linked="false" size="q"></fb:profile-pic></span>
+<span class="pic"><fb:profile-pic uid="<%=post.from.id%>" linked="false" size="q"></fb:profile-pic><br/>
+<%=post.from.first_name :last_name%> <%=post.from.last_name%>
+</span>
 <span>
 <%=post.message%><br/> 
 <%= time_ago_in_words(post.updated_time) %> ago
