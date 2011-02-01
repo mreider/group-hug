@@ -69,7 +69,7 @@ ul { list-style: disc; }
 }
 ol { list-style: decimal; }
 
-#prev_btn, #next_btn  {
+.prvnxt  {
 	cursor:hand;
 	width:100px;
 	border:1px;
