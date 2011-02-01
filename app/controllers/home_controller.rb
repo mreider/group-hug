@@ -34,4 +34,6 @@ class HomeController < ApplicationController
     end
   end
 
+  def prereqs
   end
+end
