@@ -2263,3 +2263,21 @@ Started GET "/" for 127.0.0.1 at Mon Jan 31 16:35:44 -0800 2011
   Processing by HomeController#login as HTML
 Rendered home/login.html.erb within layouts/application (22.5ms)
 Completed 200 OK in 29ms (Views: 28.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at Mon Jan 31 21:55:02 -0800 2011
+  Processing by HomeController#login as HTML
+Rendered home/login.html.erb within layouts/application (23.2ms)
+Completed 200 OK in 49ms (Views: 29.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/home/prereqs/" for 127.0.0.1 at Mon Jan 31 21:56:20 -0800 2011
+  Processing by HomeController#prereqs as HTML
+Rendered home/prereqs.html.erb within layouts/application (85.7ms)
+Completed 200 OK in 92ms (Views: 91.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/home/prereqs/" for 127.0.0.1 at Mon Jan 31 21:58:37 -0800 2011
+  Processing by HomeController#prereqs as HTML
+Rendered home/prereqs.html.erb within layouts/application (22.2ms)
+Completed 200 OK in 31ms (Views: 28.5ms | ActiveRecord: 0.0ms)
