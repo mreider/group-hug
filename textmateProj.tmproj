@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>app/views/home/prereqs.html.erb</string>
+	<string>README.textile</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -49,6 +49,20 @@
 			<key>firstVisibleLine</key>
 			<integer>51</integer>
 		</dict>
+		<key>README.textile</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>3</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>app/views/home/prereqs.html.erb</key>
 		<dict>
 			<key>caret</key>
@@ -56,7 +70,7 @@
 				<key>column</key>
 				<integer>32</integer>
 				<key>line</key>
-				<integer>4</integer>
+				<integer>37</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -68,14 +82,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>29</integer>
+				<integer>10</integer>
 				<key>line</key>
-				<integer>18</integer>
+				<integer>40</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>21</integer>
+			<integer>24</integer>
 		</dict>
 		<key>config/environment.rb</key>
 		<dict>
@@ -105,6 +119,20 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>config/routes.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>25</integer>
+				<key>line</key>
+				<integer>15</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>public/stylesheets/styles.css</key>
 		<dict>
 			<key>caret</key>
@@ -128,11 +156,13 @@
 		<string>config/initializers/markdown.rb</string>
 		<string>Gemfile.lock</string>
 		<string>app/views/home/prereqs.html.erb</string>
+		<string>README.textile</string>
+		<string>config/routes.rb</string>
 		<string>public/stylesheets/styles.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{243, 78}, {1067, 592}}</string>
+	<string>{{240, 122}, {1067, 592}}</string>
 </dict>
 </plist>

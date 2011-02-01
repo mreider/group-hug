@@ -68,3 +68,12 @@ ul { list-style: disc; }
 	text-align: left;	
 }
 ol { list-style: decimal; }
+
+.prvnxt  {
+	cursor:hand;
+	width:100px;
+	border:1px;
+	padding:5px;
+	
+}
+
