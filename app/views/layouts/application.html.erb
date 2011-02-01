@@ -14,18 +14,19 @@
   	<div id="wrap">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
-		<td valign="top" width="630"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
+		<td valign="top" width="400"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
 		<td width="20">&nbsp;</td>
-		<td valign="top" rowspan="2">
-			<img hspace="10" src="/images/eyuflag.jpg"/>
-			<h4>Engine Yard University</h4>
-			<h4>Learn Ruby on 	Rails!</h4>
+		<td valign="top" width="255">
+			<h4>Learn Ruby on Rails with <br>Engine Yard University</h4>
 			Visit <a href="http://engineyard.com/university">http://engineyard.com/university</a> for training courses, screencasts, and more.
 		</td>
+		<td valign="top">
+				<img hspace="0" src="/images/eyuflag.jpg"/>
+			
+		</td>
 	</tr>
-	<tr>
-		<td width="630" valign="top">
-			<p>
+	</table>
+	<p>
 						<% if current_facebook_user !=nil %>
 							<%= fb_logout_link("Logout", request.url) %><br />
 							<% else
@@ -34,16 +35,13 @@
 							# to access the user's facebook email and birthday, groups,read_stream
 							%>
 							<div class="featured">
-							<ol>
+							<ul>
 								<li>A Ruby on Rails app for posting messages to Facebook groups</li>
 								<li>A friendly tutorial on how to build a Facebook on Rails apps</li>
-							</ol>
+							</ul>
 							</div>
-							<br clear="left"/>
-							<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %> to use the app + post messages
-							<br clear="left">
-							<%= "My String".markdown.html_safe
-							myfile = File.open("README.textile")
+							<h3><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></h3> to use the app + post messages
+							<%= myfile = File.open("README.textile")
 							$readme = String.new
 							myfile.each {|line| $readme << line}
 							$readme.markdown.html_safe
@@ -52,10 +50,7 @@
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
 		<%= yield %>
-		</td>
-		<td>&nbsp;</td>
-		</tr>
-	</table>
+	<p>&nbsp;</p>
 	</div>	
 
   <%= fb_connect_async_js %>
