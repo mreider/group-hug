@@ -308,3 +308,129 @@ p(featured). rails new fbcomments
 	  end
 
 21. Run your app via 'rackup' command
+
+22. Implementing pagging for posts.
+Facebook Graph API return only first 25 posts, also it provide links to get next and previous items.
+So for pagging lets implement server side functionlity to return json data with list html(like it works now), next and previous pages.
+
+22.1 Server side implementation in posts_controller.rb:
+
+  def index    
+    @group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
+	@group.fetch
+	
+	#getting posts for page 0
+    @posts = @group.feed
+	@page = 0
+	
+	if params[:next]
+	  #if 'next' parameter passed - lets get page to display
+	  @page = params[:next].to_i 
+	  
+	  # and get api url to get next or previous page
+	  rest_url = (session[:page] < @page) ? session[:posts_next] : session[:posts_prev]
+	  
+	  # getting posts and map them to appropriate Mogli class
+	  @posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
+	end
+	
+	# setting data to session to get url if user want to see next
+	session[:posts_next] = @posts.next_url
+	session[:posts_prev] = @posts.previous_url 
+    session[:page] = @page
+	
+	# render template to string
+	html = render_to_string :template => "posts/index.html.erb", :layout => false
+	
+	# produce json output with html, next and previous pages.
+	render :json => {
+	  :html => html,
+	  :next => @page + 1,
+	  :prev => @page > 0 ? @page - 1 : nil
+    }
+  end
+
+22.2. Implementing client side html in \views\groups\index.html:
+ 
+<div id="posts_container" ></div>
+
+<div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %></div>
+
+<div>
+<input type="button" value="Previous" id="prev_btn" class="prvnxt" style="display:none"> <input type="button" value="Next" id="next_btn" class="prvnxt" style="display:none">
+</div>
+
+22.3. and JavaScript in \views\groups\index.html:
+
+<% content_for (:javascript) do %>
+var def_group = '<%=@default_group%>';
+$(document).ready(function() {
+  // bind select group
+  $('#group').bind('change', function() {
+    $('#posts_container').html('<p>Loading...</p>');
+	loadData('/groups/' + $(this).val() + '/posts', null)
+
+	//check if current group is default and mark checkbox checked or not
+	$('#def_group').attr('checked', $(this).val() == def_group);
+  });
+
+  // preload default group
+  loadData('/groups/<%=@default_group%>/posts', null);
+
+  // bind checkbox change
+  $('#def_group').bind('change', function() {
+	var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
+	$.post('/groups/default/' + group_id ,  function() {
+	  alert ('Default group was saved');
+	});
+	//chenge default group
+	def_group = group_id == 'nil' ? null : group_id;
+  });
+    
+  });  
+    
+// load data to 'posts_container' and 
+// display/hide 'Next' and 'Previous' buttons depending of returned json
+function loadData(rem_url, params) {
+  var temp = rem_url; 
+  if (params != null ) {
+    temp += '?' + params;
+  }
+  $('#loading_div').show();
+  
+  $.ajax({ url: temp,
+  dataType: 'json',
+  type: 'GET',
+  error: function(req,data) {
+    alert("Error getting remote data: " + data);
+    $('#loading_div').hide();
+  },
+  success: function(data) {
+    $('#loading_div').hide();
+    $('#posts_container').html(data.html);
+	if (data.next != null) {
+		$('#next_btn').show();
+		$('#next_btn').unbind('click');
+		$('#next_btn').click(function () { 
+			loadData(rem_url, 'next=' + data.next);
+		});
+	} else {
+		$('#next_btn').css('display', 'none');
+    }	
+	if (data.prev != null) {
+		$('#prev_btn').show();
+		$('#prev_btn').unbind('click');
+		$('#prev_btn').click(function () { 
+			loadData(rem_url, 'next=' + data.prev);
+		});
+	} else {
+		$('#prev_btn').css('display', 'none');
+	}
+	FB.XFBML.parse(document.getElementById('posts_container'));
+  }
+  });
+
+}
+
+<% end %>
+
