@@ -35,12 +35,9 @@
 							# to access the user's facebook email and birthday, groups,read_stream
 							%>
 							<div class="featured">
-							<ul>
-								<li>A Ruby on Rails app for posting messages to Facebook groups</li>
-								<li>A friendly tutorial on how to build a Facebook on Rails apps</li>
-							</ul>
+							Group Hug is a Ruby on Rails application for posting messages to Facebook. It was built by Sergey Kornitsky, as an exercise to learn Rails. The Readme file, printed below, serves as a tutorial on how to build Group Hug from scratch.
 							</div>
-							<h3><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></h3> to use the app + post messages
+							<br clear="left"><table><tr><td><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></td><td>to use the app + post messages<td></tr></table> 
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
