@@ -1,6 +1,6 @@
 h3. Facebook On Rails
 
-* *Install rails.* On Windows, you can use the "Rails Installer":http://railsinstaller.org and on OSX or Linux, you can use RVM by entering the following in your terminal:
+* *Install rails.* On Windows, you can use the "Rails Installer":http://railsinstaller.org and on OSX or Linux, you can use RVM by entering the following in your terminal (see "prerequisites here":"http://icanhazrails.com/home/prereqs"):
 
 <div class="featured">curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environment && source ./bootstrap_rails_environment</div>
 
