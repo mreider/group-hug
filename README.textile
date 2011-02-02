@@ -30,11 +30,13 @@ h4. Create a Facebook application
 
 * Go to the Website settings, and set the site URL or IP address. For example, ours is http://icanhazrails.com/
 
-!/images/wurl.png(This page is valid HTML)!
+!/images/wurl.png(website settings)!
 
 h4. Configure Facebooker in Rails
 
-* Create config/facebooker.yml with the appropriate environment.
+* Create config/facebooker.yml with settings from your Facebook application pages. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on your application name.
+
+!/images/appsettings.png(website settings)!
 
 	development:
 		app_id: <your application id>
