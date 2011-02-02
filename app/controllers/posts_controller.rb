@@ -7,28 +7,31 @@ class PostsController < ApplicationController
   def index    
     @group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
 	@group.fetch
-    @posts = @group.feed
 	
+	#getting posts for page 0
+    @posts = @group.feed
 	@page = 0
-	#@posts.fetch_next
+	
 	if params[:next]
+	  #if 'next' parameter passed - lets get page to display
 	  @page = params[:next].to_i 
-	  #rest_url = params[:next] + '&limit=' + params[:limit]
-	  #rest_url += '&until=' +  URI.unescape(params[:until]) if params[:until]
-	  #rest_url += '&since=' +  URI.unescape(params[:since]) if params[:since]
 	  
-	  puts 'Next page:' + @page.to_s
-	  
+	  # and get api url to get next or previous page
 	  rest_url = (session[:page] < @page) ? session[:posts_next] : session[:posts_prev]
+	  
+	  # getting posts and map them to appropriate Mogli class
 	  @posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
-	  #puts @posts.inspect	  
 	end
+	
+	# setting data to session to get url if user want to see next
 	session[:posts_next] = @posts.next_url
 	session[:posts_prev] = @posts.previous_url 
     session[:page] = @page
 	
+	# render template to string
 	html = render_to_string :template => "posts/index.html.erb", :layout => false
 	
+	# produce json output with html, next and previous pages.
 	render :json => {
 	  :html => html,
 	  :next => @page + 1,
@@ -46,9 +49,7 @@ class PostsController < ApplicationController
 	
     @group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
 	@group.fetch
-	#@posts = @group.feed
 
-    #flash[:notice] = "Note sent to #{note.recipient.email}"
     if current_facebook_user
 	  puts current_facebook_client.class.post(current_facebook_client.api_path(@group.id + '/feed'),
 			:query=>current_facebook_client.default_params.merge(
