@@ -10,6 +10,11 @@ class GroupsController < ApplicationController
 	puts @current_user.inspect
 	@default_group = @current_user.default_group
 	@default_group = @groups.first.id if @default_group.nil? && @groups.first != nil
+	if (params[:current_group] != nil)
+	  @current_group = params[:current_group]
+	else 
+	  @current_group = @default_group
+	end
   end
 
   def default

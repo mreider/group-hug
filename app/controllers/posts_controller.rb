@@ -57,6 +57,6 @@ class PostsController < ApplicationController
                         :link=>'http://staging.operations.engineyard.com/groups',
                         :message=>params['message']})).inspect
     end
-    redirect_to groups_path	
+    redirect_to groups_path(:current_group => params['group_id'])	
   end
 end
