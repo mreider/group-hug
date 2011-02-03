@@ -1,18 +1,42 @@
-h3. Facebook On Rails
+h3. (README) Building the Group Hug Rails app
 
-* *Install rails.* On Windows, you can use the "Rails Installer":http://railsinstaller.org and on OSX or Linux, you can use RVM by entering the following in your terminal:
+These steps show you how to build a the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view the "screencast here":http://engineyard.com/university. 
 
-<div class="featured">curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environment && source ./bootstrap_rails_environment</div>
+h4. Install Ruby, Rails, and create the app
+
+* To install Rails on Windows, you can use the "Rails Installer":http://railsinstaller.org. 
+
+* On OSX or Linux, you can use RVM by entering the following in your terminal ( see "prerequisites here":http://icanhazrails.com/home/prereqs ):
+
+p(featured). @curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environment && source ./bootstrap_rails_environment@
 
 * Create rails app:
 
-p(featured). rails new fbcomments
+p(featured). @rails new grouphug@
 
-* Install facebooker2 as a plugin in your rails app.
-	script/rails plugin install git://github.com/mmangino/facebooker2.git
-* Create facebook application at http://www.facebook.com/developers/createapp.php and set the site URL to your application URL. For example, ours is http://icanhazrails.com/
+* Install facebooker2 as a plugin. This is a popular library for interfacing Rails applications with Facebook. "The github for Facebookr2 is here":https://github.com/mmangino/facebooker2
 
-* Create config/facebooker.yml with the appropriate environment.
+p(featured). @script/rails plugin install git://github.com/mmangino/facebooker2.git@
+
+h4. Create a Facebook application 
+
+* Login to Facebook and visit "http://www.facebook.com/developers/createapp.php":http://www.facebook.com/developers/createapp.php.
+
+* Create a new application. Name it whatever you wish.
+
+!/images/fbapp.png(This page is valid HTML)!
+
+* Click Create App
+
+* Go to the Website settings, and set the site URL or IP address. For example, ours is http://icanhazrails.com/
+
+!/images/wurl.png(website settings)!
+
+h4. Configure Facebooker in Rails
+
+* Create config/facebooker.yml with settings from your Facebook application pages. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on your application name.
+
+!/images/appsettings.png(website settings)!
 
 	development:
 		app_id: <your application id>
