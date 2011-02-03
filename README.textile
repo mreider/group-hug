@@ -6,7 +6,7 @@ h4. Install Ruby, Rails, and create the app
 
 * To install Rails on Windows, you can use the "Rails Installer":http://railsinstaller.org. 
 
-* On OSX or Linux, you can use RVM by entering the following in your terminal ( see "prerequisites here":http://icanhazrails.com/home/prereqs ):
+* On OSX or Linux, you can use RVM by entering the following in your terminal ( see "prerequisites here":http://icanhazrails.com/user/prereqs ):
 
 p(codey). curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environment && source ./bootstrap_rails_environment
 
@@ -71,7 +71,7 @@ p(codey). <%# include JavaScript to use facebook connect%>
 <%="Welcome #{@current_user.name}!"  if @current_user !=nil%>
 <%=fb_logout_link("Logout", request.url)%><br />
 <%else%>
-<%=fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream')%>
+<%=fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream')%>
 <%end%>
 	
 * Create the model to store application users
@@ -100,11 +100,11 @@ end
   
 p(codey). rake db:migrate
   
-* Create the home controller and login action
+* Create the user controller and login action
    
-p(codey). rails generate controller Home
+p(codey). rails generate controller User
 
-* Open the page you just created @app/controllers/home_controllers.rb@
+* Open the page you just created @app/controllers/user_controllers.rb@
 
 * Create an empty action for the login page, this will just show the login button, which we already put on the application.html.erb page.
 
@@ -141,9 +141,9 @@ end
 
 * Create an empty view for the login page (again, the login button is one the application.html.erb page)
 
-p(codey). rails generate view home login
+p(codey). rails generate view user login
   
-* Open and edit the page you just created ( @app/views/home/login.html.erb@ )
+* Open and edit the page you just created ( @app/views/user/login.html.erb@ )
 
 p(codey). def create
 &nbsp;&#64;user = User.find_by_email(params[:email])
@@ -181,7 +181,7 @@ p(codey). resources :groups
    
 * Set the home page to login
    
-       root :to => "home#login"
+       root :to => "user#login"
 
    and allow to use '<controller>/<action>'	routes. Just uncomment last route
    
@@ -204,7 +204,7 @@ p(codey). resources :groups
 		if current_user.nil?
 		  flash[:notice] = "You must login to access this page"
 		  session[:return_to] = request.request_uri
-		  redirect_to :controller =>'home', :action =>'login' and return
+		  redirect_to :controller =>'user', :action =>'login' and return
 		end
 	  end
 
