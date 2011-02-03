@@ -49,7 +49,7 @@
 							<div class="clues">
 							Group Hug is a Ruby on Rails application for posting messages to Facebook. It was built by Sergey Kornitsky and Matt Reider as a learning exercise. The Readme file, printed below, serves as a tutorial on how to build Group Hug from scratch.
 							</div>
-							<br clear="left"><table><tr><td><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></td><td>to use the app + post messages<td></tr></table> 
+							<br clear="left"><table><tr><td><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></td><td>to use the app + post messages<td></tr></table> 
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
