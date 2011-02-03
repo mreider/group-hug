@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     if current_facebook_user.nil?
       flash[:notice] = "You must login to access this page"
       session[:return_to] = request.request_uri
-      redirect_to :controller =>'home', :action =>'login' and return
+      redirect_to :controller =>'user', :action =>'login' and return
 	else
 	  #fetch user object
 	  current_user
