@@ -11,4 +11,5 @@ data['production']['adapter'] = 'mysql2' if data['production'] != nil
 
 File.open(db_config, "w") {|file| file.puts(data.to_yaml) }
 
+
 run "ln -nfs #{shared_path}/config/facebooker.yml #{release_path}/config/facebooker.yml"
