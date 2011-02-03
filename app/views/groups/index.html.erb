@@ -17,7 +17,7 @@ $(document).ready(function() {
   // bind checkbox change
   $('#def_group').bind('change', function() {
 	var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
-	$.post('/groups/default/' + group_id ,  function() {
+	$.post('/groups/set_default/' + group_id ,  function() {
 	  alert ('Default group was saved');
 	});
 	//chenge default group

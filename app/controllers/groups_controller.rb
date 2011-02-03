@@ -7,7 +7,6 @@ class GroupsController < ApplicationController
     @groups = current_facebook_user.groups
 	
 	#determine selected user group or get first group id if default group is not selected
-	puts @current_user.inspect
 	@default_group = @current_user.default_group
 	@default_group = @groups.first.id if @default_group.nil? && @groups.first != nil
 	if (params[:current_group] != nil)
@@ -17,7 +16,7 @@ class GroupsController < ApplicationController
 	end
   end
 
-  def default
+  def set_default
 	render :json => { :result => @current_user.update_attributes(:default_group => params['id'] == 'nil' ? nil : params['id']) }
   end
 

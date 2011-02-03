@@ -217,6 +217,11 @@ p(codey). resources :groups
 		#determine selected user group or get first group id if default group is not selected
 		@default_group = @current_user.default_group
 		@default_group = @groups.first.id if @default_group.nil? && @groups.first != nil
+		if (params[:current_group] != nil)
+		  @current_group = params[:current_group]
+		else 
+		  @current_group = @default_group
+		end
 	  end
 	
 11. Implement goups view in app/views/groups/index.html.erb
