@@ -6,9 +6,22 @@ body {
 	text-align: center;
 }
  
-.featured {
+.codey {
 	clear: both;
 	background: #d2f1f5; 
+	border: 1px solid #93adb3;
+	font-family:Courier, 'New Courier', monospace;
+	margin: 10px 0px 0px 15px;
+	padding-bottom: 5px;
+	padding-left:10px;
+	padding-top:5px;
+	padding-right:10px;
+	width: 850px;			
+}
+
+.clues {
+	clear: both;
+	background: #E4FA73; 
 	border: 1px solid #93adb3;
 	margin: 10px 0px 0px 15px;
 	padding-bottom: 5px;

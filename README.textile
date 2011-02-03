@@ -8,15 +8,15 @@ h4. Install Ruby, Rails, and create the app
 
 * On OSX or Linux, you can use RVM by entering the following in your terminal ( see "prerequisites here":http://icanhazrails.com/home/prereqs ):
 
-p(featured). @curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environment && source ./bootstrap_rails_environment@
+p(codey). curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environment && source ./bootstrap_rails_environment
 
 * Create rails app:
 
-p(featured). @rails new grouphug@
+p(codey). rails new grouphug
 
 * Install facebooker2 as a plugin. This is a popular library for interfacing Rails applications with Facebook. "The github for Facebookr2 is here":https://github.com/mmangino/facebooker2
 
-p(featured). @script/rails plugin install git://github.com/mmangino/facebooker2.git@
+p(codey). script/rails plugin install git://github.com/mmangino/facebooker2.git
 
 h4. Create a Facebook application 
 
@@ -24,162 +24,158 @@ h4. Create a Facebook application
 
 * Create a new application. Name it whatever you wish.
 
-!/images/fbapp.png(This page is valid HTML)!
+!http://icanhazrails.com/images/fbapp.png(fb create app)!
 
 * Click Create App
 
 * Go to the Website settings, and set the site URL or IP address. For example, ours is http://icanhazrails.com/
 
-!/images/wurl.png(website settings)!
+!http://icanhazrails.com/images/wurl.png(fb website settings)!
 
 h4. Configure Facebooker in Rails
 
 * Copy the settings from your Facebook application page. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on the application you created. The page should appear as follows:
 
-!/images/appsettings.png(website settings)!
+!http://icanhazrails.com/images/appsettings.png(fb app settings)!
 
 * Create @config/facebooker.yml@ and paste the settings from your application page as follows:
 
-p(featured). @development:@
-&nbsp; @app_id: your application id@
-&nbsp; @secret: your application secret@
-&nbsp; @api_key: your application key@
-@production:@
-&nbsp; @app_id: your application id@
-&nbsp; @secret: your application secret@
-&nbsp; @api_key: your application key@
+p(codey). development:
+&nbsp; app_id: your application id
+&nbsp; secret: your application secret
+&nbsp; api_key: your application key
+production:
+&nbsp; app_id: your application id
+&nbsp; secret: your application secret
+&nbsp; api_key: your application key
 
 * Note: You should have a separate Facebook application for production and development, but in order to get things running, enter the same information for both development and production. Not a good practice, but acceptable for learning purposes.
 
 * Create @config/initializers/facebooker2.rb@ and place the following line in it.
 
-p(featured). @Facebooker2.load_facebooker_yaml@
+p(codey). Facebooker2.load_facebooker_yaml
 
 * Add the following line to @app/controllers/application_controller.rb@
 
-p(featured). @include Facebooker2::Rails::Controller@
+p(codey). include Facebooker2::Rails::Controller
 
 * Put some code into @views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in.
 
-p(featured). @<% # include JavaScript to use facebook connect%>@ 
-@<%= fb_connect_async_js %> @
-@<% if current_facebook_user !=nil %>@
-@<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>@
-@<%= fb_logout_link("Logout", request.url) %><br />@
-@<% else %>@
-@<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream') %>@
-@<% end %>@
+p(codey). <%# include JavaScript to use facebook connect%>
+<%=fb_connect_async_js%>
+<%if current_facebook_user !=nil%>
+<%="Welcome #{@current_user.name}!"  if @current_user !=nil%>
+<%=fb_logout_link("Logout", request.url)%><br />
+<%else%>
+<%=fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream')%>
+<%end%>
 	
 * Create the model to store application users
 
-p(featured). @rails generate model User@
+p(codey). rails generate model User
 	
 * Then create a database migration file by typing
 
-p(featured). @rails generate migration create_users@
+p(codey). rails generate migration create_users
 
 This creates a file in the folder @db/migrate/@ named something like @20110203050933_create_users.rb@
 
-
-p(featured). @class CreateUsers < ActiveRecord::Migration@
-&nbsp;@def self.up@
-&nbsp;&nbsp;@create_table :users do |t|@
-&nbsp;&nbsp;@t.string :email, :name, :facebook_id, :facebook_session_key, t.timestamps@
-&nbsp;&nbsp;@end@
-&nbsp;@end@
+p(codey). class CreateUsers < ActiveRecord::Migration
+&nbsp;def self.up
+&nbsp;&nbsp;create_table :users do |t|
+&nbsp;&nbsp;t.string :email, :name, :facebook_id, :facebook_session_key, t.timestamps
+&nbsp;&nbsp;end
+&nbsp;end
 &nbsp;
-&nbsp;@def self.down@
-&nbsp;&nbsp;@drop_table :users@
-&nbsp;@end@
-@end@
+&nbsp;def self.down
+&nbsp;&nbsp;drop_table :users
+&nbsp;end
+end
 
 * Run the migration
   
-p(featured). @rake db:migrate@
+p(codey). rake db:migrate
   
 * Create the home controller and login action
    
-p(featured). @rails generate controller Home@
+p(codey). rails generate controller Home
 
 * Open the page you just created @app/controllers/home_controllers.rb@
 
 * Create an empty action for the login page, this will just show the login button, which we already put on the application.html.erb page.
 
-p(featured). @def login@
-@end@
+p(codey). def login
+end
 
-* Create a couple of other methods  in the same controller, underneath the login action. The first action will be called @create@ and it will create a session. The second one will be called create_via_facebook_connect and it is called from the former method to grab the user id for this facebook user from the local database, or create a new record if the user has never signed into group hug before. 
+* Create two other methods  in the same controller, underneath the login action. The first action will be called @create@ and it will create a session. The second one will be called create_via_facebook_connect and it is called from the former method to grab the user id for this facebook user from the local database, or create a new record if the user has never signed into group hug before. 
 
-p(featured). @def create@
-&nbsp;@/@user = User.find_by_email(params[:email])@
-	create_via_facebook_connect if @user.nil?
-
-	if @user != nil 
-	  session[:user_id] = @user.id
-	  redirect_to url_for(groups_path)
-	  session[:return_to]=nil
-	else
-	  flash[:error] = "Unable to log you in"
-	  render :action=>"login"
-	end
-  end
-
-  def create_via_facebook_connect
-	if current_facebook_user 
-	  #look for an existing user
-	  @user = User.find_by_facebook_id(current_facebook_user.id)	  
-	  if @user.nil?
-		#if one isn't found - fetch user data via Mogli lib and create new user
-		current_facebook_user.fetch
-		@user = User.new(:name => current_facebook_user[:name], :email => current_facebook_user[:email], :facebook_id => current_facebook_user[:id], :facebook_session_key => current_facebook_client.access_token)
-		@user.save
-	  end
-	end
-  end
-
-
+p(codey). def create
+&nbsp;&#64;user = User.find_by_email(params[:email]) 
+&nbsp;create_via_facebook_connect if &#64;user.nil?
+&nbsp;if &#64;user != nil 
+&nbsp;&nbsp;session[:user_id] = &#64;user.id
+&nbsp;&nbsp;redirect_to url_for(groups_path)
+&nbsp;&nbsp;session[:return_to]=nil
+&nbsp;else
+&nbsp;&nbsp;flash[:error] = "Unable to log you in"
+&nbsp;&nbsp;render :action=>"login"
+&nbsp;end
+end
+&nbsp;
+def create_via_facebook_connect
+&nbsp;if current_facebook_user 
+&nbsp;&nbsp;#look for an existing user
+&nbsp;&nbsp;&#64;user = User.find_by_facebook_id(current_facebook_user.id)	  
+&nbsp;&nbsp;if &#64;user.nil?
+&nbsp;&nbsp;&nbsp;#if one isn't found - fetch user data via Mogli lib and create new user
+&nbsp;&nbsp;&nbsp;current_facebook_user.fetch
+&nbsp;&nbsp;&nbsp;&#64;user = User.new(:name => current_facebook_user[:name], :email => current_facebook_user[:email], :facebook_id => current_facebook_user[:id], :facebook_session_key => current_facebook_client.access_token)
+&nbsp;&nbsp;&nbsp;&#64;user.save
+&nbsp;&nbsp;end
+&nbsp;end
+end
 
 * Create an empty view for the login page (again, the login button is one the application.html.erb page)
 
-p(featured). @rails generate view home login@
+p(codey). rails generate view home login
   
-   
-	  def create
-		@user = User.find_by_email(params[:email])
-		create_via_facebook_connect if @user.nil?
+* Open and edit the page you just created ( @app/views/home/login.html.erb@ )
 
-		if @user != nil 
-		  session[:user_id] = @user.id
-		  redirect_to url_for(groups_path)
-		  session[:return_to]=nil
-		else
-		  flash[:error] = "Unable to log you in"
-		  render :action=>"login"
-		end
-	  end
+p(codey). def create
+&nbsp;&#64;user = User.find_by_email(params[:email])
+&nbsp;create_via_facebook_connect if &#64;user.nil?
+&nbsp;if &#64;user != nil 
+&nbsp;&nbsp;session[:user_id] = &#64;user.id
+&nbsp;&nbsp;redirect_to url_for(groups_path)
+&nbsp;&nbsp;session[:return_to]=nil
+&nbsp;else
+&nbsp;&nbsp;flash[:error] = "Unable to log you in"
+&nbsp;&nbsp;render :action=>"login"
+&nbsp;end
+end
+&nbsp;
+def create_via_facebook_connect
+&nbsp;if current_facebook_user 
+&nbsp;&nbsp;#look for an existing user
+&nbsp;&nbsp;&#64;user = User.find_by_facebook_id(current_facebook_user.id)	  
+&nbsp;&nbsp;if &#64;user.nil?
+&nbsp;&nbsp;&nbsp;#if one isn't found - fetch user data via Mogli lib and create new user
+&nbsp;&nbsp;&nbsp;current_facebook_user.fetch
+&nbsp;&nbsp;&nbsp;&#64;user = User.new(:name => current_facebook_user[:name], :email => current_facebook_user[:email], :facebook_id => current_facebook_user[:id], :facebook_session_key => current_facebook_client.access_token)
+&nbsp;&nbsp;&#64;user.save
+&nbsp;&nbsp;end
+&nbsp;end
+end
 
-	  def create_via_facebook_connect
-		if current_facebook_user 
-		  #look for an existing user
-		  @user = User.find_by_facebook_id(current_facebook_user.id)	  
-		  if @user.nil?
-			#if one isn't found - fetch user data via Mogli lib and create new user
-			current_facebook_user.fetch
-			@user = User.new(:name => current_facebook_user[:name], :email => current_facebook_user[:email], :facebook_id => current_facebook_user[:id], :facebook_session_key => current_facebook_client.access_token)
-			@user.save
-		  end
-		end
-	  end
+* After successful login users will go to groups controller.  Let's create a groups controller first:
 
-8. After successful login users will go to groups controller.  Lets create it and setup routes:
-
-       rails generate controller Groups
+p(codey). rails generate controller Groups
 	  
-   and edit config/routes.rb to add
+* Now we can edit @config/routes.rb@ to send people to the groups controller whenever a url is requested with the verb 'groups' after the domain name. For instance @http://icanhazrails.com/groups@ will load the controller @app/controllers/groups_controller.rb@. You created that controller when you typed the generate command in the last step.
+    
+p(codey). resources :groups 
    
-       resources :groups 
-   
-   set home page to login
+* Set the home page to login
    
        root :to => "home#login"
 
