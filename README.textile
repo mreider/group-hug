@@ -18,6 +18,10 @@ p(codey). rails new grouphug
 
 p(codey). script/rails plugin install git://github.com/mmangino/facebooker2.git
 
+p(clues). *What's a plugin?* Watch this short screen cast by Ryan Bigg on Rails Plugins.
+
+p(clues). *What's Facebookr2?* Watch this short screen cast by Christopher Johnson, the plugin's author.
+
 h4. Create a Facebook application 
 
 * Login to Facebook and visit "http://www.facebook.com/developers/createapp.php":http://www.facebook.com/developers/createapp.php.
