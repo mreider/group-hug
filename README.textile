@@ -34,64 +34,63 @@ h4. Create a Facebook application
 
 h4. Configure Facebooker in Rails
 
-* Create config/facebooker.yml with settings from your Facebook application pages. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on your application name.
+* Copy the settings from your Facebook application page. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on the application you created. The page should appear as follows:
 
 !/images/appsettings.png(website settings)!
 
-	development:
-		app_id: <your application id>
-		secret: <your application secret>
-		api_key: <your application key>
-		
-  and possible test/production environment
+* Create @config/facebooker.yml@ and paste the settings from your application page as follows:
 
-6. Create config/initializers/facebooker2.rb and place the following line in it
+p(featured). @development:@
+&nbsp; @app_id: your application id@
+&nbsp; @secret: your application secret@
+&nbsp; @api_key: your application key@
+@production:@
+&nbsp; @app_id: your application id@
+&nbsp; @secret: your application secret@
+&nbsp; @api_key: your application key@
 
-	Facebooker2.load_facebooker_yaml
+* Note: You should have a separate Facebook application for production and development, but in order to get things running, enter the same information for both development and production. Not a good practice, but acceptable for learning purposes.
 
-7. Add the following line to your app/controllers/application_controller.rb
+* Create @config/initializers/facebooker2.rb@ and place the following line in it.
 
-	include Facebooker2::Rails::Controller
+p(featured). @Facebooker2.load_facebooker_yaml@
 
-5. Update your rails applications to use the rails helpers. Lets put this code to page layout(views/layouts/application.html.erb) to display login button on every page or if user already loged in - his name
+* Add the following line to @app/controllers/application_controller.rb@
 
-	<% # include JavaScript to use facebook connect%>
-	<%= fb_connect_async_js %> 
+p(featured). @include Facebooker2::Rails::Controller@
 
-	<% if current_facebook_user !=nil %>
-		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
-		<%= fb_logout_link("Logout", request.url) %><br />
-	<% else
-		# we must explicitly request permissions for facebook user fields.
-		# we need to get user's email, groups, stream posts and post to groups or stream
-		# also fb_login_and_redirect first parameter is redirect url after login attempt
-		%>
-		<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false),
-			:perms => 'email,user_groups,read_stream, publish_stream') %>
-	<% end %>
+* Put some code into @views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in.
 
-6. Create model to store application users
-
-	rails generate model User
+p(featured). @<% # include JavaScript to use facebook connect%>@ 
+@<%= fb_connect_async_js %> @
+@<% if current_facebook_user !=nil %>@
+@<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>@
+@<%= fb_logout_link("Logout", request.url) %><br />@
+@<% else %>@
+@<%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'home', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream') %>@
+@<% end %>@
 	
-  and create migration like this:
-  
-    class CreateUsers < ActiveRecord::Migration
-	  def self.up
-		create_table :users do |t|
-		  t.string :email, :name, :facebook_id, :facebook_session_key
-		  t.timestamps
-		end
-	  end
+* Create the model to store application users
 
-	  def self.down
-		drop_table :users
-	  end
-    end
+p(featured). @rails generate model User@
+	
+* Then create a migration
 
-  then run migration via
+p(featured). @class CreateUsers < ActiveRecord::Migration@
+&nbsp;@def self.up@
+&nbsp;&nbsp;@create_table :users do |t|@
+&nbsp;&nbsp;@t.string :email, :name, :facebook_id, :facebook_session_key, t.timestamps@
+&nbsp;&nbsp;@end@
+&nbsp;@end@
+&nbsp;
+&nbsp;@def self.down@
+&nbsp;&nbsp;@drop_table :users@
+&nbsp;@end@
+end
+
+* Run the migration
   
-  rake db:migrate
+p(featured). @rake db:migrate@
   
 7. Create Home controller and put there login and create user action
    
