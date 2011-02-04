@@ -443,129 +443,131 @@ end
 *Facebook Graph API return only first 25 posts, also it provide links to get next and previous items.
 So for pagging lets implement server side functionlity to return json data with list html(like it works now), next and previous pages.
 
-*22.1 Server side implementation in posts_controller.rb:
+*22.1 Server side implementation in @app/controllers/posts_controller.rb@:
 
 p(codey).
 def index    
-&nbsp;@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
+&nbsp;@group = Mogli::Group.new({:id=&gt;params['group_id']}, current_facebook_client)
 &nbsp;@group.fetch
 
 &nbsp;#getting posts for page 0
 &nbsp;@posts = @group.feed
 &nbsp;@page = 0
 
-if params[:next]
-  #if 'next' parameter passed - lets get page to display
-  @page = params[:next].to_i 
+&nbsp;if params[:next]
+&nbsp;&nbsp;#if 'next' parameter passed - lets get page to display
+&nbsp;&nbsp;@page = params[:next].to_i 
   
-  # and get api url to get next or previous page
-  rest_url = (session[:page] &lt; @page) ? session[:posts_next] : session[:posts_prev]
+&nbsp;&nbsp;# and get api url to get next or previous page
+&nbsp;&nbsp;rest_url = (session[:page] &lt; @page) ? session[:posts_next] : session[:posts_prev]
   
-  # getting posts and map them to appropriate Mogli class
-  @posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
+&nbsp;&nbsp;# getting posts and map them to appropriate Mogli class
+&nbsp;&nbsp;@posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
+&nbsp;end
+
+&nbsp;# setting data to session to get url if user want to see next
+&nbsp;session[:posts_next] = @posts.next_url
+&nbsp;session[:posts_prev] = @posts.previous_url 
+&nbsp;session[:page] = @page
+
+&nbsp;# render template to string
+&nbsp;html = render_to_string :template =&gt; "posts/index.html.erb", :layout =&gt; false
+
+&nbsp;# produce json output with html, next and previous pages.
+&nbsp;render :json =&gt; {
+&nbsp;&nbsp;:html =&gt; html,
+&nbsp;&nbsp;:next =&gt; @page + 1,
+&nbsp;&nbsp;:prev =&gt; @page &gt; 0 ? @page - 1 : nil
+&nbsp;}
 end
 
-# setting data to session to get url if user want to see next
-session[:posts_next] = @posts.next_url
-session[:posts_prev] = @posts.previous_url 
-session[:page] = @page
-
-# render template to string
-html = render_to_string :template => "posts/index.html.erb", :layout => false
-
-# produce json output with html, next and previous pages.
-render :json => {
-  :html => html,
-  :next => @page + 1,
-  :prev => @page > 0 ? @page - 1 : nil
-}
-end
-
-* 22.2. Implementing client side html in \views\groups\index.html:
+* 22.2. Implementing client side html in @app/views/groups/index.html.erb@:
  
 p(codey).
-<div id="posts_container" ></div>
+&lt;div id="posts_container" &gt;&lt;/div&gt;
 
-<div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %></div>
+&lt;div id="loading_div"  style="display:none" &gt;&lt;%= image_tag "loading-spinner.gif", :alt =&gt; "Loading" %&gt;&lt;/div&gt;
 
-<div>
-<input type="button" value="Previous" id="prev_btn" class="prvnxt" style="display:none"> <input type="button" value="Next" id="next_btn" class="prvnxt" style="display:none">
-</div>
+&lt;div&gt;
+&nbsp;&lt;input type="button" value="Previous" id="prev_btn" class="prvnxt" style="display:none"&gt; &lt;input type="button" value="Next" id="next_btn" class="prvnxt" style="display:none"&gt;
+&lt;/div&gt;
 
-* 22.3. and JavaScript in \views\groups\index.html:
+* 22.3. and JavaScript in @app/views/groups/index.html.erb@:
 
 p(codey).
-<% content_for (:javascript) do %>
-var def_group = '<%=@default_group%>';
-$(document).ready(function() {
-  // bind select group
-  $('#group').bind('change', function() {
-    $('#posts_container').html('<p>Loading...</p>');
-	loadData('/groups/' + $(this).val() + '/posts', null)
+&lt;% content_for (:javascript) do %&gt;
+&nbsp;var def_group = '&lt;%=@default_group%&gt;';
+&nbsp;$(document).ready(function() {
+&nbsp;&nbsp;// bind select group
+&nbsp;&nbsp;$('#group').bind('change', function() {
+&nbsp;&nbsp;&nbsp;$('#posts_container').html('&lt;p&gt;Loading...&lt;/p&gt;');
+&nbsp;&nbsp;&nbsp;loadData('/groups/' + $(this).val() + '/posts', null)
 
-	//check if current group is default and mark checkbox checked or not
-	$('#def_group').attr('checked', $(this).val() == def_group);
-  });
+&nbsp;&nbsp;&nbsp;//check if current group is default and mark checkbox checked or not
+&nbsp;&nbsp;&nbsp;$('#def_group').attr('checked', $(this).val() == def_group);
+&nbsp;&nbsp;});
 
-  // preload default group
-  loadData('/groups/<%=@default_group%>/posts', null);
+&nbsp;&nbsp;// preload default group
+&nbsp;&nbsp;loadData('/groups/&lt;%=@current_group%&gt;/posts', null);
 
-  // bind checkbox change
-  $('#def_group').bind('change', function() {
-	var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
-	$.post('/groups/default/' + group_id ,  function() {
-	  alert ('Default group was saved');
-	});
-	//chenge default group
-	def_group = group_id == 'nil' ? null : group_id;
-  });
-    
-  });  
-    
-// load data to 'posts_container' and 
-// display/hide 'Next' and 'Previous' buttons depending of returned json
-function loadData(rem_url, params) {
-  var temp = rem_url; 
-  if (params != null ) {
-    temp += '?' + params;
-  }
-  $('#loading_div').show();
+&nbsp;&nbsp;// bind checkbox change
+&nbsp;&nbsp;$('#def_group').bind('change', function() {
+&nbsp;&nbsp;&nbsp;var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
+&nbsp;&nbsp;&nbsp;$.post('/groups/set_default/' + group_id ,  function() {
+&nbsp;&nbsp;&nbsp;&nbsp;alert ('Default group was saved');
+&nbsp;&nbsp;&nbsp;});
+&nbsp;&nbsp;&nbsp;//chenge default group
+&nbsp;&nbsp;&nbsp;def_group = group_id == 'nil' ? null : group_id;
+&nbsp;&nbsp;}); 
+&nbsp;});  
   
-  $.ajax({ url: temp,
-  dataType: 'json',
-  type: 'GET',
-  error: function(req,data) {
-    alert("Error getting remote data: " + data);
-    $('#loading_div').hide();
-  },
-  success: function(data) {
-    $('#loading_div').hide();
-    $('#posts_container').html(data.html);
-	if (data.next != null) {
-		$('#next_btn').show();
-		$('#next_btn').unbind('click');
-		$('#next_btn').click(function () { 
-			loadData(rem_url, 'next=' + data.next);
-		});
-	} else {
-		$('#next_btn').css('display', 'none');
-    }	
-	if (data.prev != null) {
-		$('#prev_btn').show();
-		$('#prev_btn').unbind('click');
-		$('#prev_btn').click(function () { 
-			loadData(rem_url, 'next=' + data.prev);
-		});
-	} else {
-		$('#prev_btn').css('display', 'none');
-	}
-	FB.XFBML.parse(document.getElementById('posts_container'));
-  }
-  });
+  
+* load data to 'posts_container' and display/hide 'Next' and 'Previous' buttons depending of returned json
 
-}
+p(codey).
+&nbsp;function loadData(rem_url, params) {
+&nbsp;&nbsp;var temp = rem_url; 
+&nbsp;&nbsp;if (params != null ) {
+&nbsp;&nbsp;&nbsp;temp += '?' + params;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;$('#loading_div').show();
+  
+&nbsp;&nbsp;$.ajax({ url: temp,
+&nbsp;&nbsp;&nbsp;dataType: 'json',
+&nbsp;&nbsp;&nbsp;type: 'GET',
+&nbsp;&nbsp;&nbsp;error: function(req,data) {
+&nbsp;&nbsp;&nbsp;&nbsp;alert("Error getting remote data: " + data);
+&nbsp;&nbsp;&nbsp;&nbsp;$('#loading_div').hide();
+&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;success: function(data) {
+&nbsp;&nbsp;&nbsp;&nbsp;$('#loading_div').hide();
+&nbsp;&nbsp;&nbsp;&nbsp;$('#posts_container').html(data.html);
+&nbsp;&nbsp;&nbsp;&nbsp;if (data.next != null) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#next_btn').show();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#next_btn').unbind('click');
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#next_btn').click(function () { 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadData(rem_url, 'next=' + data.next);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+&nbsp;&nbsp;&nbsp;&nbsp;} else {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#next_btn').css('display', 'none');
+&nbsp;&nbsp;&nbsp;&nbsp;}	
+&nbsp;&nbsp;&nbsp;&nbsp;if (data.prev != null) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#prev_btn').show();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#prev_btn').unbind('click');
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#prev_btn').click(function () { 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadData(rem_url, 'next=' + data.prev);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+&nbsp;&nbsp;&nbsp;&nbsp;} else {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#prev_btn').css('display', 'none');
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
+&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;});
 
-<% end %>
+&nbsp;}
+
+&lt;% end %&gt;
+    
 
 h4. Create the second Facebook app for production.
 
