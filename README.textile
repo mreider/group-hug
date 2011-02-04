@@ -378,23 +378,22 @@ $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
 &nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
 });
 
-h4. Get Facebook Profile pictures using Mogli
+h4. Get Group Messages, and Profile pictures using Mogli
 
-* The Posts controller will return user images in FBML (facebook Markup Language). We parse FBML via FB.XFBML.parse
-	 
-* 17. Posts list in selected group to insert via AJAX in @app/controllers/posts_controller.rb@:
+* Mogli is a Ruby Gem that is installed with Facebookr2 as one of its dependencies. It is the Facebook Open Graph Library for Ruby. You can read more about Open Graph "here":http://developers.facebook.com/docs/opengraph/. In a nuthsell, Open Graph lets Ruby developer integrate their websites with Facebook, so that users don't have to visit Facebook to interact with it. We use Mogli to retrieve the posts for the selected group, as well as attributes like profile pictures.
+
+* Here, we grab messages for the selected group @app/controllers/posts_controller.rb@. 
 
 p(codey).
 def index    
 &nbsp;@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
 &nbsp;@group.fetch
-
 &nbsp;#getting posts for page 0
 &nbsp;@posts = @group.feed
 &nbsp;render :layout => false
 end
 
-* view template can be like @app/views/posts/index.rb@:
+* Then we show the messages, along with facebook profile pics in  @app/views/posts/index.rb@:
 
 p(codey).	 
 &lt;% @posts.each do |post| %&gt;
@@ -412,7 +411,7 @@ p(codey).
 &nbsp;&lt;% end %&gt;
 &lt;% end %&gt;	 
 
-* 18. Link to post new message used nested resource path in @app/views/posts/index.rb@ :
+* At the top of the page (above the code you just inserted), create a link to post a new message in @app/views/posts/index.rb@:
 
 p(codey).	 
 &lt;%= link_to "Post", url_for(new_group_post_path(@group.id)) %&gt;	
