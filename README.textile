@@ -1,12 +1,18 @@
 h3. Building the Group Hug Rails app
 
-These steps show you how to build a the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view the "screencast here":http://engineyard.com/university. 
+These steps show you how to build a the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view some helpful "screencasts here":http://engineyard.com/university. 
+
+h4. Table of Contents
+
+# "Install Ruby, Rails, and create the app":#install
+# "Create a Facebook application":#facebook
+# Configure Facebooker in Rails
 
 h4. A little Warning
 
 Before you start this tutorial, you really, really, truly, deeply, sorta, kinda have to login to the application and use it. It's the only way to understand what you will be building.
 
-h4. Install Ruby, Rails, and create the app
+h4(#install). Install Ruby, Rails, and create the app
 
 * To install Rails on Windows, you can use the "Rails Installer":http://railsinstaller.org. 
 
@@ -26,7 +32,7 @@ p(clues). *What's a plugin?* Watch a  screen cast by Ryan Bigg
 
 p(clues). *What's Facebooker2* Watch a screen cast by Christopher Johnson
 
-h4. Create a Facebook application 
+h4(#facebook). Create a Facebook application 
 
 * Login to Facebook and visit "http://www.facebook.com/developers/createapp.php":http://www.facebook.com/developers/createapp.php.
 
@@ -40,7 +46,7 @@ h4. Create a Facebook application
 
 !http://icanhazrails.com/images/wurl.png(fb website settings)!
 
-h4. Configure Facebooker in Rails
+h4(#ConfigFB). Configure Facebooker in Rails
 
 * Copy the settings from your Facebook application page. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on the application you created. The page should appear as follows:
 
@@ -570,5 +576,16 @@ h4. Create the second Facebook app for production.
 
 !http://icanhazrails.com/images/anotherFB.png(fb app settings again)!
 
-* Go back to the facebooker.yml file. Under your development settings, set your
+* Go back to the facebooker.yml file. Under your development settings, set your production settings.
+
+p(codey). development:
+&nbsp; app_id: your DEVELOPMENT application id
+&nbsp; secret: your DEVELOPMENT application secret
+&nbsp; api_key: your DEVELOPMENT application key
+production:
+&nbsp; app_id: your PRODUCTION application id
+&nbsp; secret: your PRODUCTION application secret
+&nbsp; api_key: your PRODUCTION application key
+
+
 
