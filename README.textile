@@ -630,7 +630,7 @@ production:
 &nbsp; secret: your PRODUCTION application secret
 &nbsp; api_key: your PRODUCTION application key
 
-h4. (#deploy) Deploying on Engine Yard
+h4(#deploy). Deploying on Engine Yard
 
 "top":#top
 
