@@ -201,9 +201,9 @@ p(codey). match ':controller(/:action(/:id(.:format)))'
 
 p(codey). def current_user
 &nbsp;if session[:user_id]
-&nbsp;&nbsp;@current_user ||= User.find(session[:user_id])
-&nbsp;elsif current_facebook_user and @current_user.nil?
-&nbsp;&nbsp;@current_user = User.find_by_facebook_id(current_facebook_user.id)
+&nbsp;&nbsp;&#64;current_user ||= User.find(session[:user_id])
+&nbsp;elsif current_facebook_user and &#64;current_user.nil?
+&nbsp;&nbsp;&#64;current_user = User.find_by_facebook_id(current_facebook_user.id)
 &nbsp;end
 end
 	  
@@ -231,18 +231,18 @@ p(codey). before_filter :login_required
 
 p(codey). def index 
 &nbsp;#get current users groups
-&nbsp;@groups = current_facebook_user.groups
+&nbsp;&#64;groups = current_facebook_user.groups
 &nbsp;#determine selected user group or get first group id if default group is not selected
-&nbsp;@default_group = @current_user.default_group
-&nbsp;@default_group = @groups.first.id if @default_group.nil? && @groups.first != nil
+&nbsp;&#64;default_group = &#64;current_user.default_group
+&nbsp;&#64;default_group = &#64;groups.first.id if &#64;default_group.nil? && &#64;groups.first != nil
 &nbsp;if (params[:current_group] != nil)
-&nbsp;&nbsp;@current_group = params[:current_group]
+&nbsp;&nbsp;&#64;current_group = params[:current_group]
 &nbsp;else 
-&nbsp;&nbsp;@current_group = @default_group
+&nbsp;&nbsp;&#64;current_group = &#64;default_group
 &nbsp;end
 end
 	
-11. Implement goups view in app/views/groups/index.html.erb
+* Implement goups view in app/views/groups/index.html.erb
 
 
 		<select name="group" id="group" >
