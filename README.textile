@@ -238,7 +238,7 @@ end
 	
 * Open the groups view ( @app/views/groups/index.html.erb@ ). This was automagically created when you generated the controller.
 
-* Add some HTML and embedded ruby to this view. This creates a select box of all the groups the user has on Facebook.
+* Add some HTML and embedded ruby to this view. This creates a select box of all the groups the user has on Facebook. The inner HTML of the posts container will be replaced with the group posts from Facebook using JQuery in a minute.
 
 p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 &lt;% @groups.each do |group| %&gt;
@@ -249,8 +249,10 @@ p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 &lt;input id=&quot;def_group&quot; name=&quot;def_group&quot; type=&quot;checkbox&quot; selected=&quot;false&quot; /&gt; Default group &lt;br/&gt;
 &lt;div id=&quot;posts_container&quot; &gt;Posts&lt;/div&gt;
 		
-	
-12. Install jQuery via instructions at https://github.com/lleger/Rails-3-jQuery/ 
+* Install jQuery via the instructions at @https://github.com/lleger/Rails-3-jQuery/@
+
+p(clues). *How does JQuery work?* Watch a screen cast by Matt Dolian
+
 
 13. Add placeholder for JavaScript at layout header
 
