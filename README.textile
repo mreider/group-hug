@@ -2,6 +2,10 @@ h3. Building the Group Hug Rails app
 
 These steps show you how to build a the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view the "screencast here":http://engineyard.com/university. 
 
+h4. A little Warning
+
+Before you start this tutorial, you really, really, truly, deeply, sorta, kinda have to login to the application and use it. After using it, you will be able to conceptualize what you are building. Constructing a car without having driven one puts a lot of pedestrians at risk.
+
 h4. Install Ruby, Rails, and create the app
 
 * To install Rails on Windows, you can use the "Rails Installer":http://railsinstaller.org. 
@@ -79,6 +83,8 @@ p(codey). &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
 &lt;/body&gt;
 &lt;/html&gt;
 
+h4. Adding the Facebook Connect button
+
 * Put some more code into @app/views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in. Here we are using embedded ruby. Put this code above the yield method:
 
 p(codey). &lt;%# include JavaScript to use facebook connect%&gt;
@@ -91,7 +97,9 @@ p(codey). &lt;%# include JavaScript to use facebook connect%&gt;
 &lt;%end%&gt;
 
 p(clues). *What's Embedded Ruby?* Watch a screen cast by Christopher Johnson
-	
+
+h4. Tying in the database
+
 * Create the model to store application users
 
 p(codey). rails generate model User
@@ -121,9 +129,11 @@ end
 * Run the migration
   
 p(codey). rake db:migrate
-  
+
+h4. Users, Sessions, and Logins
+
 * Create the user controller and login action
-   
+
 p(codey). rails generate controller User
 
 * Open the page you just created @app/controllers/user_controllers.rb@
@@ -203,7 +213,7 @@ p(codey). resources :groups
    
 p(codey). resources :groups root :to => "user#login"
 
-* Use standard '<controller>/<action>'	routes by uncommenting the line in your @config/routes.rb@
+* Use standard '&lt;controller&gt;/&lt;action&gt;'	routes by uncommenting the line in your @config/routes.rb@
    
 p(codey). match ':controller(/:action(/:id(.:format)))'
 	   
@@ -237,7 +247,9 @@ end
 
 p(codey). before_filter :login_required
 
-* Then we define the default behavior (index) for the group controller	  
+h4. List the user's Facebook groups
+
+* To grab the user's Facebook groups, define the default behavior (index) for the group controller. Note that we have some extra code in there that let's the user set a default group, which we will save in the database a little later in the tutorial.	  
 
 p(codey). def index 
 &nbsp;#get current users groups
@@ -264,20 +276,31 @@ p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 &lt;br/&gt;
 &lt;input id=&quot;def_group&quot; name=&quot;def_group&quot; type=&quot;checkbox&quot; selected=&quot;false&quot; /&gt; Default group &lt;br/&gt;
 &lt;div id=&quot;posts_container&quot; &gt;Posts&lt;/div&gt;
-		
+
+h4. Using JQuery to save the Default Group
+
+* We will use JQuery to communicate with Facebook when a user selects their default group using the checkbox.
+
 * Install jQuery via the instructions at @https://github.com/lleger/Rails-3-jQuery/@
 
 p(clues). *How does JQuery work?* Watch a screen cast by Matt Dolian
 
 * We need to tell Rails to load any Javascript (JQuery in particular) that is sent to the page. You will see how to send it in a moment. Right now, we're just receiving it. Go back and edit the @app/viewslayouts/application.html.erb@ and put this up in the header of your HTML document.
 
-p(clues). &lt;script&gt; 
+p(codey). &lt;script&gt; 
 &lt;%= yield (:javascript) %&gt;
 &lt;/script&gt;
 
-		
-&lt;% content_for (:javascript) do %&gt;
-&nbsp;$(document).ready(function() {
+* Now put some JQuery on the group view ( @app/views/groups/index.html.erb@ ). We send it back to that yield statemement, above, using the @content_for@ method like this:
+	
+p(codey). &lt;% content_for (:javascript) do %&gt;
+var def_group = '<%=@default_group%>';
+
+* We also set a little Ruby code inside of the JQuery script for the default group. This value comes from the groups_controller. Hopefully you are seeing, now how controllers send data to views.
+
+* Under this last chunk, we put the JQuery code, which handles events for when the user clicks the checkbox to select their default group.
+
+p(codey). &nbsp;$(document).ready(function() {
 &nbsp;&nbsp;// bind checkbox change
 &nbsp;&nbsp;$('#def_group').bind('change', function() {
 &nbsp;&nbsp;&nbsp;var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
@@ -292,38 +315,38 @@ p(clues). &lt;script&gt;
 
 * So now we have combo box with all user groups.
 	 
-* 14. Implement default group save in GroupsController
+* Notice that the JQuery code posts the default @group_id@ to the groups controller, and calls the @set_default@ method. Let's build this method in GroupsController ( @app/controllers/groups_controller.rb@ ) 
 
-p(clues). def set_default
+p(codey). def set_default
 &nbsp;render :json => { :result => @current_user.update_attributes(:default_group => params['id'] == 'nil' ? nil : params['id']) }
 end
 
-* 15. Implement Posts in current group displaying. 
-     
-* rails generate controller Groups
-	 
-* Lets use nested resouces to relate groups and posts. Setup routes this way:
+h4. Showing posts
+
+* Lets use nested resources to relate groups and posts. Open your config/routes.rb file and add the following:
 	
-p(clues). resources :groups do
+p(codey). resources :groups do
 &nbsp;resources :posts
 end
+
+p(clues). *What's a Nested Resource?* See this screencast by Danish Khan
 	
-*16. Call Posts List in groups view via jQuery:
+* Using JQuery, we will bind the select list to the post container, meaning that every time the select box is changed, the inner html of the post container will be replaced with messages from that Facebook group.  
 
-*Implement 'change' event in document.ready block:
+* We put this code in the document.ready block, underneath the code you wrote a few steps ago in @app/views/groups/index.html.erb@
 
-p(clues). // bind select group
+p(codey). // bind select group
 $('#group').bind('change', function() {
 &nbsp;$('#posts_container').html('<p>Loading...</p>');
 &nbsp;loadData('/groups/' + $(this).val() + '/posts', null)
-
 &nbsp;//check if current group is default and mark checkbox checked or not
 &nbsp;$('#def_group').attr('checked', $(this).val() == def_group);
 });
+}); //ends the document.ready block
 
-* in the end of javascript
+* In the same page ( @app/views/groups/index.html.erb@ ) create another function to load the data
 
-p(clues).
+p(codey).
 function loadData(rem_url, params) {
 &nbsp;var temp = rem_url; 
 &nbsp;if (params != null ) {
@@ -346,14 +369,18 @@ function loadData(rem_url, params) {
 &nbsp;});
 }
 
-* And implement default group display on page load:
+p(clues). The Facebook magic in this JQuery script is well documented at the Facebook Developer "here:":http://developers.facebook.com/docs/reference/javascript/fb.xfbml.parse/
+
+* Finally, on the same page, we add some code that will display the default group when the page loads:
 	  
 p(clues).
 $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
 &nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
 });
 
-* Posts controller will return user images in FBML, so we must parse FBML via FB.XFBML.parse
+h4. Get Facebook Profile pictures using Mogli
+
+* The Posts controller will return user images in FBML (facebook Markup Language). We parse FBML via FB.XFBML.parse
 	 
 * 17. Posts list in selected group to insert via AJAX in @app/controllers/posts_controller.rb@:
 
