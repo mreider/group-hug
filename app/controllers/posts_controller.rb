@@ -53,9 +53,7 @@ class PostsController < ApplicationController
     if current_facebook_user
 	  puts current_facebook_client.class.post(current_facebook_client.api_path(@group.id + '/feed'),
 			:query=>current_facebook_client.default_params.merge(
-			           {:name => "#{current_facebook_user.name} Post a message using app!",
-                        :link=>'http://staging.operations.engineyard.com/groups',
-                        :message=>params['message']})).inspect
+			           {:name => "#{current_facebook_user.name} Post a message using app!",:message=>params['message']})).inspect
     end
     redirect_to groups_path(:current_group => params['group_id'])	
   end

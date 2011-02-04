@@ -26,13 +26,13 @@ h4. Create a Facebook application
 
 * Login to Facebook and visit "http://www.facebook.com/developers/createapp.php":http://www.facebook.com/developers/createapp.php.
 
-* Create a new application. Name it whatever you wish.
+* We need to create two Facebook applications, one for development, and one for production. Name the first one something fun, with @_development@ at the end. We called ours icanhazrails_development.
 
 !http://icanhazrails.com/images/fbapp.png(fb create app)!
 
 * Click Create App
 
-* Go to the Website settings, and set the site URL or IP address. For example, ours is http://icanhazrails.com/
+* Go to the Website settings, and set the site URL to the IP address of your computer.
 
 !http://icanhazrails.com/images/wurl.png(fb website settings)!
 
@@ -48,12 +48,6 @@ p(codey). development:
 &nbsp; app_id: your application id
 &nbsp; secret: your application secret
 &nbsp; api_key: your application key
-production:
-&nbsp; app_id: your application id
-&nbsp; secret: your application secret
-&nbsp; api_key: your application key
-
-* Note: You should have a separate Facebook application for production and development, but in order to get things running, enter the same information for both development and production. Not a good practice, but acceptable for learning purposes.
 
 * Create @config/initializers/facebooker2.rb@ and place the following line in it.
 
@@ -67,7 +61,7 @@ p(codey). include Facebooker2::Rails::Controller
 
 p(clues). *What's a Controller?* Watch a screen cast by Ryan Bigg
 
-* Put some code into @views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in.
+* Put some code into @views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in. Here we are using embedded ruby.
 
 p(codey). <%# include JavaScript to use facebook connect%>
 <%=fb_connect_async_js%>
@@ -79,6 +73,8 @@ p(codey). <%# include JavaScript to use facebook connect%>
 <%end%>
 
 p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
+
+p(clues). *What's Embedded Ruby?* Watch a screen cast by Christopher Johnson
 	
 * Create the model to store application users
 
@@ -149,11 +145,9 @@ def create_via_facebook_connect
 &nbsp;end
 end
 
-* Create an empty view for the login page (again, the login button is one the application.html.erb page)
-
-p(codey). rails generate view user login
+* Create an empty view for the login page ( @app/views/user/login.html.erb@ ). Remember, the login button is actually in the application.html.erb page, which puts it on every view.
   
-* Open and edit the page you just created ( @app/views/user/login.html.erb@ )
+* Edit the view as follows:
 
 p(codey). def create
 &nbsp;&#64;user = User.find_by_email(params[:email])
@@ -237,13 +231,16 @@ p(codey). def index
 &nbsp;&#64;default_group = &#64;groups.first.id if &#64;default_group.nil? && &#64;groups.first != nil
 &nbsp;if (params[:current_group] != nil)
 &nbsp;&nbsp;&#64;current_group = params[:current_group]
-&nbsp;else 
+&nbsp;else
 &nbsp;&nbsp;&#64;current_group = &#64;default_group
 &nbsp;end
 end
 	
-* Implement goups view in app/views/groups/index.html.erb
+* Open the groups view ( @app/views/groups/index.html.erb@ ). This was automagically created when you generated the controller.
 
+* Add some HTML and embedded ruby in this view.
+
+p(codey). 
 
 		<select name="group" id="group" >
 		<% @groups.each do |group| %>
@@ -517,4 +514,12 @@ function loadData(rem_url, params) {
 }
 
 <% end %>
+
+h4. Create the second Facebook app for production.
+
+* Go back and create another Facebook application for your production application. Name it the same thing minus the @_development@ bit.
+
+!http://icanhazrails.com/images/anotherFB.png(fb app settings again)!
+
+* Go back to the facebooker.yml file. Under your development settings, set your
 
