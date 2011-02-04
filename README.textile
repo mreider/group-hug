@@ -353,7 +353,6 @@ function loadData(rem_url, params) {
 &nbsp;&nbsp;temp += '?' + params;
 &nbsp;}
 &nbsp;$('#loading_div').show();
-  
 &nbsp;$.ajax({ url: temp,
 &nbsp;&nbsp;dataType: 'html',
 &nbsp;&nbsp;type: 'GET',
