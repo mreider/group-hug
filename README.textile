@@ -240,7 +240,7 @@ end
 
 * Add some HTML and embedded ruby to this view. This creates a select box of all the groups the user has on Facebook.
 
-p(codey).&lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
+p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 &lt;% @groups.each do |group| %&gt;
 &lt;option value=&quot;&lt;%=group.id%&gt;&quot; &lt;%= 'selected' if @default_group == group.id %&gt;&gt;&lt;%=group.name%&gt;&lt;/option&gt;
 &lt;% end %&gt;
