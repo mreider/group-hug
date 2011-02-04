@@ -436,13 +436,11 @@ p(codey). &lt;h1&gt;Post a wall message to: &lt;%= @group.name %&gt;&lt;/h1&gt;
 &lt;% end -%&gt;
 &lt;%= link_to 'Back', url_for(groups_path) %&gt;
 
-* 20. Form submited to create action in @app/controllers/posts_controller.rb@
+* When the form is submitted, it will post to the create action to create action in @app/controllers/posts_controller.rb@
 
-p(codey).	 
-def create
+p(codey). def create
 &nbsp;@group = Mogli::Group.new({:id=&gt;params['group_id']}, current_facebook_client)
 &nbsp;@group.fetch
-
 &nbsp;if current_facebook_user
 &nbsp;&nbsp;current_facebook_client.class.post(current_facebook_client.api_path(@group.id + '/feed'),
 &nbsp;&nbsp;&nbsp;:query=&gt;current_facebook_client.default_params.merge(
@@ -453,42 +451,34 @@ def create
 &nbsp;redirect_to groups_path(:current_group =&gt; params['group_id'])	
 end
 
-* 21. Run your app via 'rackup' command
+* Run your app via:
 
-* 22. Implementing pagging for posts.
-*Facebook Graph API return only first 25 posts, also it provide links to get next and previous items.
-So for pagging lets implement server side functionlity to return json data with list html(like it works now), next and previous pages.
+p(codey). rackup
 
-*22.1 Server side implementation in @app/controllers/posts_controller.rb@:
+h4. Implementing pagination
 
-p(codey).
-def index    
+* The Facebook Graph API return only the first 25 posts at a time. Here, we will provide links to get the next and previous items. First, we implement server side functionality to return json data. We do this by modifying the index method. this in @app/controllers/posts_controller.rb@.
+
+p(codey). def index    
 &nbsp;@group = Mogli::Group.new({:id=&gt;params['group_id']}, current_facebook_client)
 &nbsp;@group.fetch
-
 &nbsp;#getting posts for page 0
 &nbsp;@posts = @group.feed
 &nbsp;@page = 0
-
 &nbsp;if params[:next]
 &nbsp;&nbsp;#if 'next' parameter passed - lets get page to display
 &nbsp;&nbsp;@page = params[:next].to_i 
-  
 &nbsp;&nbsp;# and get api url to get next or previous page
 &nbsp;&nbsp;rest_url = (session[:page] &lt; @page) ? session[:posts_next] : session[:posts_prev]
-  
 &nbsp;&nbsp;# getting posts and map them to appropriate Mogli class
 &nbsp;&nbsp;@posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
 &nbsp;end
-
-&nbsp;# setting data to session to get url if user want to see next
+&nbsp;# setting data to session to get url if the user want to see next
 &nbsp;session[:posts_next] = @posts.next_url
 &nbsp;session[:posts_prev] = @posts.previous_url 
 &nbsp;session[:page] = @page
-
 &nbsp;# render template to string
 &nbsp;html = render_to_string :template =&gt; "posts/index.html.erb", :layout =&gt; false
-
 &nbsp;# produce json output with html, next and previous pages.
 &nbsp;render :json =&gt; {
 &nbsp;&nbsp;:html =&gt; html,
@@ -497,35 +487,30 @@ def index
 &nbsp;}
 end
 
-* 22.2. Implementing client side html in @app/views/groups/index.html.erb@:
+* Let's also modify the HTML for the groups page. This is located in @app/views/groups/index.html.erb@. We add a little spinny thing (which you can grab from our github repo, along with all of the source code for this application). We also add the previous and next buttons.
  
-p(codey).
-&lt;div id="posts_container" &gt;&lt;/div&gt;
-
+p(codey). &lt;div id="posts_container" &gt;&lt;/div&gt;
 &lt;div id="loading_div"  style="display:none" &gt;&lt;%= image_tag "loading-spinner.gif", :alt =&gt; "Loading" %&gt;&lt;/div&gt;
-
 &lt;div&gt;
 &nbsp;&lt;input type="button" value="Previous" id="prev_btn" class="prvnxt" style="display:none"&gt; &lt;input type="button" value="Next" id="next_btn" class="prvnxt" style="display:none"&gt;
 &lt;/div&gt;
 
-* 22.3. and JavaScript in @app/views/groups/index.html.erb@:
+h4. Tying up loose ends
 
-p(codey).
-&lt;% content_for (:javascript) do %&gt;
+* Let's just check that our JavaScript is doing everything it needs to be in @app/views/groups/index.html.erb@. Gets default group. Check. Loads data. Check. Checks if current is default and marks the checkbox. Hmm, did we overlook that? Ok, well it's below. Send a clicked checkbox to the set_default method in groups controller. Yep.
+
+p(codey). &lt;% content_for (:javascript) do %&gt;
 &nbsp;var def_group = '&lt;%=@default_group%&gt;';
 &nbsp;$(document).ready(function() {
 &nbsp;&nbsp;// bind select group
 &nbsp;&nbsp;$('#group').bind('change', function() {
 &nbsp;&nbsp;&nbsp;$('#posts_container').html('&lt;p&gt;Loading...&lt;/p&gt;');
 &nbsp;&nbsp;&nbsp;loadData('/groups/' + $(this).val() + '/posts', null)
-
 &nbsp;&nbsp;&nbsp;//check if current group is default and mark checkbox checked or not
 &nbsp;&nbsp;&nbsp;$('#def_group').attr('checked', $(this).val() == def_group);
 &nbsp;&nbsp;});
-
 &nbsp;&nbsp;// preload default group
 &nbsp;&nbsp;loadData('/groups/&lt;%=@current_group%&gt;/posts', null);
-
 &nbsp;&nbsp;// bind checkbox change
 &nbsp;&nbsp;$('#def_group').bind('change', function() {
 &nbsp;&nbsp;&nbsp;var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
@@ -537,17 +522,14 @@ p(codey).
 &nbsp;&nbsp;}); 
 &nbsp;});  
   
-  
-* load data to 'posts_container' and display/hide 'Next' and 'Previous' buttons depending of returned json
+* Also, we should add some Javascript that displays / hides the Next and Previous buttons appropriately. Whether they show up or not depends upon what comes back from the JSON package.
 
-p(codey).
-&nbsp;function loadData(rem_url, params) {
+p(codey). &nbsp;function loadData(rem_url, params) {
 &nbsp;&nbsp;var temp = rem_url; 
 &nbsp;&nbsp;if (params != null ) {
 &nbsp;&nbsp;&nbsp;temp += '?' + params;
 &nbsp;&nbsp;}
 &nbsp;&nbsp;$('#loading_div').show();
-  
 &nbsp;&nbsp;$.ajax({ url: temp,
 &nbsp;&nbsp;&nbsp;dataType: 'json',
 &nbsp;&nbsp;&nbsp;type: 'GET',
@@ -579,11 +561,8 @@ p(codey).
 &nbsp;&nbsp;&nbsp;&nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
 &nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;});
-
 &nbsp;}
-
 &lt;% end %&gt;
-    
 
 h4. Create the second Facebook app for production.
 
