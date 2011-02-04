@@ -61,18 +61,34 @@ p(codey). include Facebooker2::Rails::Controller
 
 p(clues). *What's a Controller?* Watch a screen cast by Ryan Bigg
 
-* Put some code into @views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in. Here we are using embedded ruby.
-
-p(codey). <%# include JavaScript to use facebook connect%>
-<%=fb_connect_async_js%>
-<%if current_facebook_user !=nil%>
-<%="Welcome #{@current_user.name}!"  if @current_user !=nil%>
-<%=fb_logout_link("Logout", request.url)%><br />
-<%else%>
-<%=fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream')%>
-<%end%>
+* In rails, there is a special Layout in @app/views/layouts/application.html.erb@. This file will be sent to the browser no matter what page is sent. It's the perfect place to put headers and footers. Place some standard HTML in that file, and include the Ruby @yield@ method as the placeholder for running the actual page that was requested.
 
 p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
+
+p(codey).&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+&lt;title&gt;An XHTML 1.0 Strict standard template&lt;/title&gt;
+&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;%= yield %&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
+
+* Put some more code into @app/views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in. Here we are using embedded ruby. Put this code above the yield method:
+
+p(codey). &lt;%# include JavaScript to use facebook connect%&gt;
+&lt;%=fb_connect_async_js%&gt;
+&lt;%if current_facebook_user !=nil%&gt;
+&lt;%=&quot;Welcome #{@current_user.name}!&quot;  if @current_user !=nil%&gt;
+&lt;%=fb_logout_link(&quot;Logout&quot;, request.url)%&gt;&lt;br /&gt;
+&lt;%else%&gt;
+&lt;%=fb_login_and_redirect( url_for(:action =&gt; 'create', :controller =&gt; 'user', :only_path =&gt; false), :perms =&gt; 'email,user_groups,read_stream, publish_stream')%&gt;
+&lt;%end%&gt;
 
 p(clues). *What's Embedded Ruby?* Watch a screen cast by Christopher Johnson
 	
@@ -253,12 +269,11 @@ p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 
 p(clues). *How does JQuery work?* Watch a screen cast by Matt Dolian
 
+* We need to tell Rails to load some Javascript (JQuery in particular) on every page. Go back and edit the @app/viewslayouts/application.html.erb@ and put this up in the header of your HTML document.
 
-13. Add placeholder for JavaScript at layout header
-
-	  <script> 
-	  <%= yield (:javascript) %>
-	  </script>
+p(clues). &lt;script&gt; 
+&lt;%= yield (:javascript) %&gt;
+&lt;/script&gt;
 	
 	and create JavaScript to save default group
 		
