@@ -1,6 +1,6 @@
 body {
 	font: 12px/170% 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
-	color: #666666; 	
+	color: #555; 	
 	margin: 0; 
 	padding: 0; 
 	text-align: center;
@@ -49,7 +49,7 @@ a:hover {
  
 /* Headers */
 h1 {
-	color:E4001B;
+	color:#E4001B;
 	font: bold 1em/1.5em Georgia, 'Times New Roman', Times, serif;
 	margin: 10px 20px 7px 0px;}
 	
