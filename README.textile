@@ -19,9 +19,7 @@ h4. Table of Contents
 # "Implementing pagination":#pagination
 # "Tying up loose ends":#looseends
 # "Creating the second Facebook app for production":#fb2
-# "Deploying on Engine Yard":#deploy
-
-
+# "Deploying on Engine Yard":#deploy 
 
 h4. A little Warning
 
@@ -632,9 +630,16 @@ production:
 &nbsp; secret: your PRODUCTION application secret
 &nbsp; api_key: your PRODUCTION application key
 
-h4.(#deploy) Deploying on Engine Yard
+h4. (#deploy) Deploying on Engine Yard
 
 "top":#top
+
+* Time to deploy! To put this application into production, we need to do a few things. First, you need to sign up for an Engine Yard account. 
+
+p(clues). "Sign up for Engine Yard cloud here":https://login.engineyard.com/signup/from/https://cloud.engineyard.com
+
+Once you have signed up, you need to...
+
 
 
 
