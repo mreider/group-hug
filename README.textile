@@ -18,9 +18,9 @@ p(codey). rails new grouphug
 
 p(codey). script/rails plugin install git://github.com/mmangino/facebooker2.git
 
-p(clues). *What's a plugin?* Watch this short screen cast by Ryan Bigg on Rails Plugins.
+p(clues). *What's a plugin?* Watch a  screen cast by Ryan Bigg
 
-p(clues). *What's Facebookr2?* Watch this short screen cast by Christopher Johnson, the plugin's author.
+p(clues). *What's Facebooker2* Watch a screen cast by Christopher Johnson
 
 h4. Create a Facebook application 
 
@@ -59,9 +59,13 @@ production:
 
 p(codey). Facebooker2.load_facebooker_yaml
 
+p(clues). *What's YAML?* Watch a screen cast by Matt Reider
+
 * Add the following line to @app/controllers/application_controller.rb@
 
 p(codey). include Facebooker2::Rails::Controller
+
+p(clues). *What's a Controller?* Watch a screen cast by Ryan Bigg
 
 * Put some code into @views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in.
 
@@ -73,14 +77,20 @@ p(codey). <%# include JavaScript to use facebook connect%>
 <%else%>
 <%=fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false), :perms => 'email,user_groups,read_stream, publish_stream')%>
 <%end%>
+
+p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
 	
 * Create the model to store application users
 
 p(codey). rails generate model User
+
+p(clues). *What's a Model?* Watch a screen cast by Ryan Bigg
 	
 * Then create a database migration file by typing
 
 p(codey). rails generate migration create_users
+
+p(clues). *What's a Database Migration?* Watch a screen cast by Ryan Bigg
 
 This creates a file in the folder @db/migrate/@ named something like @20110203050933_create_users.rb@
 
@@ -181,21 +191,21 @@ p(codey). resources :groups
    
 * Set the home page to login
    
-       root :to => "user#login"
+p(codey). resources :groups root :to => "user#login"
 
-   and allow to use '<controller>/<action>'	routes. Just uncomment last route
+* Use standard '<controller>/<action>'	routes by uncommenting the line in your @config/routes.rb@
    
-       match ':controller(/:action(/:id(.:format)))'
+p(codey). match ':controller(/:action(/:id(.:format)))'
 	   
-9. Add methods to ApplicationController to check if user is logged in and determine user id:
+* Add methods to ApplicationController ( @app/controllers/application_controller.rb@ ) to check if the user has logged in and determine his/her user id:
 
-	  def current_user
-		if session[:user_id]
-		  @current_user ||= User.find(session[:user_id])
-		elsif current_facebook_user and @current_user.nil?
-		  @current_user = User.find_by_facebook_id(current_facebook_user.id)
-		end
-	  end
+p(codey). def current_user
+&nbsp;if session[:user_id]
+&nbsp;&nbsp;@current_user ||= User.find(session[:user_id])
+&nbsp;elsif current_facebook_user and @current_user.nil?
+&nbsp;&nbsp;@current_user = User.find_by_facebook_id(current_facebook_user.id)
+&nbsp;end
+end
 	  
 	  helper_method :current_user
 	  
