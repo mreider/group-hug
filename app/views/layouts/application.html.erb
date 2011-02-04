@@ -4,15 +4,15 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
-  <title>Group Hug | Sponsored by Engine Yard</title>
+  <title>icanhazrails | Sponsored by Engine Yard</title>
   
-    <meta property="og:title" content="Ruby on Rails application for posting messages to Facebook"/>
+    <meta property="og:title" content="i can haz rails?"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="http://icanhazrails.com/"/>
-    <meta property="og:image" content="http://icanhazrails.com/images/eyuflag.jpg"/>
-    <meta property="og:site_name" content="Group Hug | Sponsored by Engine Yard"/>
+    <meta property="og:image" content="http://icanhazrails.com/images/icanhaz.png"/>
+    <meta property="og:site_name" content="icanhazrails.com"/>
     <meta property="og:description"
-          content="Group Hug is a Ruby on Rails application for posting messages to Facebook. It was built by Sergey Kornitsky and Matt Reider as a learning exercise. The Readme file, printed below, serves as a tutorial on how to build Group Hug from scratch."/>
+          content="A Ruby on Rails learning tool built by Sergey Kornitsky and Matt Reider"/>
   
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
@@ -26,7 +26,7 @@
   	<div id="wrap">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
-		<td valign="top" width="400"><h1><img src="/images/lolhug.jpg"> <a href="http://icanhazrails.com">Group Hug</a></h1></td>
+		<td valign="top" width="295"><img src="/images/icanhaz.png"> <a href="http://icanhazrails.com"></a></td>
 		<td width="20">&nbsp;</td>
 		<td valign="top" width="255">
 			<h4>Learn Ruby on Rails with <br>Engine Yard University</h4>
@@ -46,15 +46,16 @@
 							# here we instruct facebook to ask the user for permission for our website
 							# to access the user's facebook email and birthday, groups,read_stream
 							%>
+							<h3>Learn Rails in the context of a real application</h1>
 							<div class="clues">
-							Learning happens in the context of real applications. Group Hug is a simple Rails application (written by Sergey Kornitsky and Matt Reider) built as a learning tool. The README file, printed below, serves as a tutorial on how to build Group Hug from scratch.<br><br>The application has three simple requirements from the user's perspective:
+							Group Hug is a simple Rails application (written by Sergey Kornitsky and Matt Reider) built as a learning tool. The README file, printed below, serves as a tutorial on how to build Group Hug from scratch.<br><br>The application has three simple requirements from the user's perspective:
 						  <ol> 
 							<li>Login using Facebook Connect</li>
 							<li>Choose from user's Facebook Groups</li>
 							<li>Post messages to the selected group</li>
 						  </ol>
 							</div>
-							<br clear="left"><table><tr><td><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></td><td>to try the group hug application + post messages<td></tr></table> 
+							<br clear="left"><table><tr><td><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></td><td>to try Group Hug in its finished form<td></tr></table> 
 							<% end %>
 						</p>
 		<%= "Welcome #{@current_user.name}!"  if @current_user !=nil %>
