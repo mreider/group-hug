@@ -197,7 +197,7 @@ p(codey). resources :groups root :to => "user#login"
    
 p(codey). match ':controller(/:action(/:id(.:format)))'
 	   
-* Add methods to ApplicationController ( @app/controllers/application_controller.rb@ ) to check if the user has logged in and determine his/her user id:
+* Add methods to ApplicationController ( @app/controllers/application_controller.rb@ ) to check if the user has logged in and determine his/her user id. Things in the ApplicationController are available to every controller in the application.
 
 p(codey). def current_user
 &nbsp;if session[:user_id]
@@ -207,18 +207,23 @@ p(codey). def current_user
 &nbsp;end
 end
 	  
-	  helper_method :current_user
-	  
-	  
-	  def login_required
-		if current_user.nil?
-		  flash[:notice] = "You must login to access this page"
-		  session[:return_to] = request.request_uri
-		  redirect_to :controller =>'user', :action =>'login' and return
-		end
-	  end
+* Next, we make the above code a helper method. This is a bit of trickery in that usually helper methods are created in their own files under the helpers directory and are more useful in views, rather than controllers, because they are visual. We will create non-tricky helper methods in a few minutes. This tricky one is turned into a helper method using the @helper_method@ method.
 
-10. Implement GroupsController
+p(clues). *What's a Helper Method?* Watch a screen cast by Ryan Bigg
+
+p(codey). helper_method :current_user
+
+* Also in the ApplicationController is a method for checking if the user is logged in.
+	  
+p(codey). def login_required
+&nbsp;if current_user.nil?
+&nbsp;&nbsp;flash[:notice] = "You must login to access this page"
+&nbsp;&nbsp;session[:return_to] = request.request_uri
+&nbsp;&nbsp;redirect_to :controller =>'user', :action =>'login' and return
+&nbsp;end
+end
+
+* Next we
 
 	  def index 
 		#get current users groups
