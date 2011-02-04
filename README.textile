@@ -275,107 +275,85 @@ p(clues). &lt;script&gt;
 &lt;%= yield (:javascript) %&gt;
 &lt;/script&gt;
 
-
 		
-		<% content_for (:javascript) do %>
-		$(document).ready(function() {
-		  // bind checkbox change
-		  $('#def_group').bind('change', function() {
-			var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
-			$.post('/groups/set_default/' + group_id ,  function() {
-			  alert ('Default group was saved');
-			});
-			//chenge default group
-			def_group = group_id == 'nil' ? null : group_id;
-		  });
-		 
-		 
-		});
+&lt;% content_for (:javascript) do %&gt;
+&nbsp;$(document).ready(function() {
+&nbsp;&nbsp;// bind checkbox change
+&nbsp;&nbsp;$('#def_group').bind('change', function() {
+&nbsp;&nbsp;&nbsp;var group_id = $(this).is(':checked') ? $('#group').val() : 'nil'
+&nbsp;&nbsp;&nbsp;$.post('/groups/set_default/' + group_id ,  function() {
+&nbsp;&nbsp;&nbsp;&nbsp;alert ('Default group was saved');
+&nbsp;&nbsp;&nbsp;});
+&nbsp;&nbsp;&nbsp;//chenge default group
+&nbsp;&nbsp;&nbsp;def_group = group_id == 'nil' ? null : group_id;
+&nbsp;&nbsp;});
+&nbsp;});
+&lt;% end %&gt;
 
-
-		
-		<% end %>
-
-     So now we have combo box with all user groups.
+* So now we have combo box with all user groups.
 	 
-14. Implement default group save in GroupsController
+* 14. Implement default group save in GroupsController
 
-	  def set_default
-		render :json => { :result => @current_user.update_attributes(:default_group => params['id'] == 'nil' ? nil : params['id']) }
-	  end
+p(clues). def set_default
+&nbsp;render :json => { :result => @current_user.update_attributes(:default_group => params['id'] == 'nil' ? nil : params['id']) }
+end
 
-15. Implement Posts in current group displaying. 
+* 15. Implement Posts in current group displaying. 
      
-	 rails generate controller Groups
+* rails generate controller Groups
 	 
-	Lets use nested resouces to relate groups and posts. Setup routes this way:
+* Lets use nested resouces to relate groups and posts. Setup routes this way:
 	
-	  resources :groups do
-		resources :posts
-	  end
+p(clues). resources :groups do
+&nbsp;resources :posts
+end
 	
-16. Call Posts List in groups view via jQuery:
+*16. Call Posts List in groups view via jQuery:
 
-    Implement 'change' event in document.ready block:
+*Implement 'change' event in document.ready block:
 
-	  // bind select group
-	  $('#group').bind('change', function() {
-		$('#posts_container').html('<p>Loading...</p>');
-		loadData('/groups/' + $(this).val() + '/posts', null)
+p(clues). // bind select group
+$('#group').bind('change', function() {
+&nbsp;$('#posts_container').html('<p>Loading...</p>');
+&nbsp;loadData('/groups/' + $(this).val() + '/posts', null)
 
-		//check if current group is default and mark checkbox checked or not
-		$('#def_group').attr('checked', $(this).val() == def_group);
-	  });
+&nbsp;//check if current group is default and mark checkbox checked or not
+&nbsp;$('#def_group').attr('checked', $(this).val() == def_group);
+});
 
-		function loadData(rem_url, params) {
-		  var temp = rem_url; 
-		  if (params != null ) {
-			temp += '?' + params;
-		  }
-		  $('#loading_div').show();
-		  
-		  $.ajax({ url: temp,
-		  dataType: 'json',
-		  type: 'GET',
-		  error: function(req,data) {
-			alert("Error getting remote data: " + data);
-			$('#loading_div').hide();
-		  },
-		  success: function(data) {
-			$('#loading_div').hide();
-			$('#posts_container').html(data.html);
-			if (data.next != null) {
-				$('#next_btn').show();
-				$('#next_btn').unbind('click');
-				$('#next_btn').click(function () { 
-					loadData(rem_url, 'next=' + data.next);
-				});
-			} else {
-				$('#next_btn').css('display', 'none');
-			}	
-			if (data.prev != null) {
-				$('#prev_btn').show();
-				$('#prev_btn').unbind('click');
-				$('#prev_btn').click(function () { 
-					loadData(rem_url, 'next=' + data.prev);
-				});
-			} else {
-				$('#prev_btn').css('display', 'none');
-			}
-			FB.XFBML.parse(document.getElementById('posts_container'));
-		  }
-		  });
+* in the end of javascript
 
-		}
-
-	  And implement default group display on page load:
-	  
-	  $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
-		FB.XFBML.parse(document.getElementById('posts_container'));
+p(clues).
+function loadData(rem_url, params) {
+&nbsp;var temp = rem_url; 
+&nbsp;if (params != null ) {
+&nbsp;&nbsp;temp += '?' + params;
+&nbsp;}
+&nbsp;$('#loading_div').show();
   
-	  });
+&nbsp;$.ajax({ url: temp,
+&nbsp;&nbsp;dataType: 'html',
+&nbsp;&nbsp;type: 'GET',
+&nbsp;&nbsp;error: function(req,data) {
+&nbsp;&nbsp;&nbsp;alert("Error getting remote data: " + data);
+&nbsp;&nbsp;&nbsp;$('#loading_div').hide();
+&nbsp;&nbsp;},
+&nbsp;&nbsp;success: function(data) {
+&nbsp;&nbsp;&nbsp;$('#loading_div').hide();
+&nbsp;&nbsp;&nbsp;$('#posts_container').html(data);
+&nbsp;&nbsp;&nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
+&nbsp;&nbsp;}
+&nbsp;});
+}
 
-	Posts controller will return user images in FBML, so we must parse FBML via FB.XFBML.parse
+* And implement default group display on page load:
+	  
+p(clues).
+$('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
+&nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
+});
+
+* Posts controller will return user images in FBML, so we must parse FBML via FB.XFBML.parse
 	 
 17. Posts list in selected group to insert via AJAX:
 
