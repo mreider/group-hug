@@ -61,6 +61,8 @@ p(codey). include Facebooker2::Rails::Controller
 
 p(clues). *What's a Controller?* Watch a screen cast by Ryan Bigg
 
+h4. Creating the Layout
+
 * In rails, there is a special Layout in @app/views/layouts/application.html.erb@. This file will be sent to the browser no matter what page is sent. It's the perfect place to put headers and footers. Place some standard HTML in that file, and include the Ruby @yield@ method as the placeholder for running the actual page that was requested.
 
 p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
@@ -76,8 +78,6 @@ p(codey). &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
 &lt;%= yield %&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-
-p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
 
 * Put some more code into @app/views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in. Here we are using embedded ruby. Put this code above the yield method:
 
@@ -269,13 +269,13 @@ p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 
 p(clues). *How does JQuery work?* Watch a screen cast by Matt Dolian
 
-* We need to tell Rails to load some Javascript (JQuery in particular) on every page. Go back and edit the @app/viewslayouts/application.html.erb@ and put this up in the header of your HTML document.
+* We need to tell Rails to load any Javascript (JQuery in particular) that is sent to the page. You will see how to send it in a moment. Right now, we're just receiving it. Go back and edit the @app/viewslayouts/application.html.erb@ and put this up in the header of your HTML document.
 
 p(clues). &lt;script&gt; 
 &lt;%= yield (:javascript) %&gt;
 &lt;/script&gt;
-	
-	and create JavaScript to save default group
+
+
 		
 		<% content_for (:javascript) do %>
 		$(document).ready(function() {
