@@ -355,128 +355,135 @@ $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
 
 * Posts controller will return user images in FBML, so we must parse FBML via FB.XFBML.parse
 	 
-17. Posts list in selected group to insert via AJAX:
+* 17. Posts list in selected group to insert via AJAX in @app/controllers/posts_controller.rb@:
 
-	  def index    
-		@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
-		@group.fetch
-		
-		#getting posts for page 0
-		@posts = @group.feed
-		render :layout => false
-	  end
+p(codey).
+def index    
+&nbsp;@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
+&nbsp;@group.fetch
 
-     view template can be like:
-	 
-	<% @posts.each do |post| %>
+&nbsp;#getting posts for page 0
+&nbsp;@posts = @group.feed
+&nbsp;render :layout => false
+end
 
-	<div style="clear:both">
-	  <span style="float:left;width:55px">
-		<fb:profile-pic uid="<%=post.from.id%>" linked="false" size="q"></fb:profile-pic>
-	  </span>
-	  <span>
-		<%=post.message%><br/> 
-		<%=time_ago_in_words(post.updated_time) %> ago
-	  </span>
-	</div>
+* view template can be like @app/views/posts/index.rb@:
 
-	<% end %>
-	 
+p(codey).	 
+&lt;% @posts.each do |post| %&gt;
+&nbsp;&lt;% begin %&gt;
+&nbsp;&nbsp;&lt;div class="post"&gt;
+&nbsp;&nbsp;&lt;span class="pic"&gt;&lt;fb:profile-pic uid="&lt;%=post.from.id if post.from !=nil%&gt;" linked="false" size="q"&gt;&lt;/fb:profile-pic&gt;&lt;br/&gt;
+&nbsp;&nbsp;&lt;% from = post.from.fetch if post.from !=nil %&gt; &lt;%=from[:first_name] if from != nil %&gt; &lt;%=from[:last_name]  if from != nil %&gt;
+&nbsp;&nbsp;&lt;/span&gt;
+&nbsp;&nbsp;&lt;span&gt;
+&nbsp;&nbsp;&lt;%=post.message%&gt;&lt;br/&gt; 
+&nbsp;&nbsp;&lt;%= time_ago_in_words(post.updated_time) %&gt; ago
+&nbsp;&nbsp;&lt;/span&gt;
+&nbsp;&nbsp;&lt;/div&gt; 		  
+&nbsp;&lt;% rescue %&gt;  
+&nbsp;&lt;% end %&gt;
+&lt;% end %&gt;	 
 
-18. Link to post new message used nested resource path:
+* 18. Link to post new message used nested resource path in @app/views/posts/index.rb@ :
 
-	<%= link_to "Post", url_for(new_group_post_path(@group.id)) %>	
+p(codey).	 
+&lt;%= link_to "Post", url_for(new_group_post_path(@group.id)) %&gt;	
 	
-19. Display form to post message to group. PostsController get current group to display name:
+* 19. Display form to post message to group in @app/controllers/posts_controller.rb@. PostsController get current group to display name:
 
-	  def new
-		@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
-		@group.fetch
-	  end
+p(codey).	 
+def new
+&nbsp;@group = Mogli::Group.new({:id=&gt;params['group_id']}, current_facebook_client)
+&nbsp;@group.fetch
+end
 
-	and simple view:
-	
-	<h1>Post a wall message to: <%= @group.name %></h1>
+* and simple view.see in @app/views/posts/new.rb@ :
 
-	<% form_tag  url_for(group_posts_path(@group.id)), :method=>:post do -%>
-	 
-	  
-	  <%= hidden_field_tag 'group_id', @group.id %>
-	  
-	  <div class="field">
-		<%= text_area_tag 'message', nil, :rows => 10, :cols => 60 %>
-	  </div>
-	  <div class="field">
-		<%= check_box_tag 'send_via_email', 'yes', true %> Send the whole group an email
-	  </div>
-	  <div class="actions">
-		<%= submit_tag 'Save' %>
-	  </div>
-	<% end -%>
-	 
-	<%= link_to 'Back', url_for(groups_path) %>
+p(codey).	 	
+&lt;h1&gt;Post a wall message to: &lt;%= @group.name %&gt;&lt;/h1&gt;
 
-20. Form submited to create action
+&lt;% form_tag  url_for(group_posts_path(@group.id)), :method=&gt;:post do -%&gt;
+  
+&nbsp;&lt;%= hidden_field_tag 'group_id', @group.id %&gt;
+  
+&nbsp;&lt;div class="field"&gt;
+&nbsp;&nbsp;&lt;%= text_area_tag 'message', nil, :rows =&gt; 10, :cols =&gt; 60 %&gt;
+&nbsp;&lt;/div&gt;
+&nbsp;&lt;div class="field"&gt;
+&nbsp;&nbsp;&lt;%= check_box_tag 'send_via_email', 'yes', true %&gt; Send the whole group an email
+&nbsp;&lt;/div&gt;
+&nbsp;&lt;div class="actions"&gt;
+&nbsp;&nbsp;&lt;%= submit_tag 'Save' %&gt;
+&nbsp;&lt;/div&gt;
+&lt;% end -%&gt;
+ 
+&lt;%= link_to 'Back', url_for(groups_path) %&gt;
 
-	  def create
-		@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
-		@group.fetch
+* 20. Form submited to create action in @app/controllers/posts_controller.rb@
 
-		if current_facebook_user
-		  current_facebook_client.class.post(current_facebook_client.api_path(@group.id + '/feed'),
-				:query=>current_facebook_client.default_params.merge(
-						   {:name => "#{current_facebook_user.name} Post a message using app!",
-							:link=>'http://staging.operations.engineyard.com/groups',
-							:message=>params['message']})).inspect
-		end
-		redirect_to groups_path	
-	  end
+p(codey).	 
+def create
+&nbsp;@group = Mogli::Group.new({:id=&gt;params['group_id']}, current_facebook_client)
+&nbsp;@group.fetch
 
-21. Run your app via 'rackup' command
+&nbsp;if current_facebook_user
+&nbsp;&nbsp;current_facebook_client.class.post(current_facebook_client.api_path(@group.id + '/feed'),
+&nbsp;&nbsp;&nbsp;:query=&gt;current_facebook_client.default_params.merge(
+&nbsp;&nbsp;&nbsp;&nbsp;{:name =&gt; "#{current_facebook_user.name} Post a message using app!",
+&nbsp;&nbsp;&nbsp;&nbsp;:link=&gt;'http://staging.operations.engineyard.com/groups',
+&nbsp;&nbsp;&nbsp;&nbsp;:message=&gt;params['message']}))
+&nbsp;end
+&nbsp;redirect_to groups_path(:current_group =&gt; params['group_id'])	
+end
 
-22. Implementing pagging for posts.
-Facebook Graph API return only first 25 posts, also it provide links to get next and previous items.
+* 21. Run your app via 'rackup' command
+
+* 22. Implementing pagging for posts.
+*Facebook Graph API return only first 25 posts, also it provide links to get next and previous items.
 So for pagging lets implement server side functionlity to return json data with list html(like it works now), next and previous pages.
 
-22.1 Server side implementation in posts_controller.rb:
+*22.1 Server side implementation in posts_controller.rb:
 
-  def index    
-    @group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
-	@group.fetch
-	
-	#getting posts for page 0
-    @posts = @group.feed
-	@page = 0
-	
-	if params[:next]
-	  #if 'next' parameter passed - lets get page to display
-	  @page = params[:next].to_i 
-	  
-	  # and get api url to get next or previous page
-	  rest_url = (session[:page] < @page) ? session[:posts_next] : session[:posts_prev]
-	  
-	  # getting posts and map them to appropriate Mogli class
-	  @posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
-	end
-	
-	# setting data to session to get url if user want to see next
-	session[:posts_next] = @posts.next_url
-	session[:posts_prev] = @posts.previous_url 
-    session[:page] = @page
-	
-	# render template to string
-	html = render_to_string :template => "posts/index.html.erb", :layout => false
-	
-	# produce json output with html, next and previous pages.
-	render :json => {
-	  :html => html,
-	  :next => @page + 1,
-	  :prev => @page > 0 ? @page - 1 : nil
-    }
-  end
+p(codey).
+def index    
+&nbsp;@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
+&nbsp;@group.fetch
 
-22.2. Implementing client side html in \views\groups\index.html:
+&nbsp;#getting posts for page 0
+&nbsp;@posts = @group.feed
+&nbsp;@page = 0
+
+if params[:next]
+  #if 'next' parameter passed - lets get page to display
+  @page = params[:next].to_i 
+  
+  # and get api url to get next or previous page
+  rest_url = (session[:page] &lt; @page) ? session[:posts_next] : session[:posts_prev]
+  
+  # getting posts and map them to appropriate Mogli class
+  @posts = current_facebook_client.get_and_map_url(rest_url,@posts.classes)
+end
+
+# setting data to session to get url if user want to see next
+session[:posts_next] = @posts.next_url
+session[:posts_prev] = @posts.previous_url 
+session[:page] = @page
+
+# render template to string
+html = render_to_string :template => "posts/index.html.erb", :layout => false
+
+# produce json output with html, next and previous pages.
+render :json => {
+  :html => html,
+  :next => @page + 1,
+  :prev => @page > 0 ? @page - 1 : nil
+}
+end
+
+* 22.2. Implementing client side html in \views\groups\index.html:
  
+p(codey).
 <div id="posts_container" ></div>
 
 <div id="loading_div"  style="display:none" ><%= image_tag "loading-spinner.gif", :alt => "Loading" %></div>
@@ -485,8 +492,9 @@ So for pagging lets implement server side functionlity to return json data with 
 <input type="button" value="Previous" id="prev_btn" class="prvnxt" style="display:none"> <input type="button" value="Next" id="next_btn" class="prvnxt" style="display:none">
 </div>
 
-22.3. and JavaScript in \views\groups\index.html:
+* 22.3. and JavaScript in \views\groups\index.html:
 
+p(codey).
 <% content_for (:javascript) do %>
 var def_group = '<%=@default_group%>';
 $(document).ready(function() {
