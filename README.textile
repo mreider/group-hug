@@ -337,9 +337,9 @@ p(clues). *What's a Nested Resource?* See this screencast by Danish Khan
 
 p(codey). // bind select group
 $('#group').bind('change', function() {
-&nbsp;$('#posts_container').html('<p>Loading...</p>');
-&nbsp;loadData('/groups/' + $(this).val() + '/posts', null)
-&nbsp;//check if current group is default and mark checkbox checked or not
+&nbsp; $('#posts_container').html('&lt;p&gt;Loading...&lt;/p&gt;');
+&nbsp; loadData('/groups/' + $(this).val() + '/posts', null)
+&nbsp; //check if current group is default and mark checkbox checked or not
 &nbsp;$('#def_group').attr('checked', $(this).val() == def_group);
 });
 }); //ends the document.ready block
