@@ -1,4 +1,4 @@
-h3. Building the Group Hug Rails app
+h3(#top). Building the Group Hug Rails app
 
 These steps show you how to build a the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view some helpful "screencasts here":http://engineyard.com/university. 
 
@@ -6,13 +6,30 @@ h4. Table of Contents
 
 # "Install Ruby, Rails, and create the app":#install
 # "Create a Facebook application":#facebook
-# Configure Facebooker in Rails
+# "Configure Facebooker in Rails":#configFB
+# "Creating the Layout":#layout
+# "Adding the Facebook Connect button":#fbconnect
+# "Tying in the database":#database
+# "Users, Sessions, and Logins":#usl
+# "List the user's Facebook groups":#listgroups
+# "Using JQuery to save the Default Group":#jquery
+# "Showing posts":#showposts
+# "Get Group Messages, and Profile pictures using Mogli":#mogli
+# "Post Messages to Facebook":#postmess
+# "Implementing pagination":#pagination
+# "Tying up loose ends":#looseends
+# "Creating the second Facebook app for production":#fb2
+# "Deploying on Engine Yard":#deploy
+
+
 
 h4. A little Warning
 
 Before you start this tutorial, you really, really, truly, deeply, sorta, kinda have to login to the application and use it. It's the only way to understand what you will be building.
 
 h4(#install). Install Ruby, Rails, and create the app
+
+"top":#top
 
 * To install Rails on Windows, you can use the "Rails Installer":http://railsinstaller.org. 
 
@@ -32,7 +49,9 @@ p(clues). *What's a plugin?* Watch a  screen cast by Ryan Bigg
 
 p(clues). *What's Facebooker2* Watch a screen cast by Christopher Johnson
 
-h4(#facebook). Create a Facebook application 
+h4(#facebook). Create a Facebook application
+
+"top":#top
 
 * Login to Facebook and visit "http://www.facebook.com/developers/createapp.php":http://www.facebook.com/developers/createapp.php.
 
@@ -47,6 +66,8 @@ h4(#facebook). Create a Facebook application
 !http://icanhazrails.com/images/wurl.png(fb website settings)!
 
 h4(#ConfigFB). Configure Facebooker in Rails
+
+"top":#top
 
 * Copy the settings from your Facebook application page. To find your settings, go to "the facebook developer page":http://www.facebook.com/developers/ and click on the application you created. The page should appear as follows:
 
@@ -71,7 +92,9 @@ p(codey). include Facebooker2::Rails::Controller
 
 p(clues). *What's a Controller?* Watch a screen cast by Ryan Bigg
 
-h4. Creating the Layout
+h4(#layout). Creating the Layout
+
+"top":#top
 
 * In rails, there is a special Layout in @app/views/layouts/application.html.erb@. This file will be sent to the browser no matter what page is sent. It's the perfect place to put headers and footers. Place some standard HTML in that file, and include the Ruby @yield@ method as the placeholder for running the actual page that was requested.
 
@@ -89,7 +112,9 @@ p(codey). &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
 &lt;/body&gt;
 &lt;/html&gt;
 
-h4. Adding the Facebook Connect button
+h4(#fbconnect). Adding the Facebook Connect button
+
+"top":#top
 
 * Put some more code into @app/views/layouts/application.html.erb@ to display the Facebook login button on every page. The conditional logic will replace the login button with the user's name, if he/she is already logged in. Here we are using embedded ruby. Put this code above the yield method:
 
@@ -104,7 +129,9 @@ p(codey). &lt;%# include JavaScript to use facebook connect%&gt;
 
 p(clues). *What's Embedded Ruby?* Watch a screen cast by Christopher Johnson
 
-h4. Tying in the database
+h4(#database). Tying in the database
+
+"top":#top
 
 * Create the model to store application users
 
@@ -136,7 +163,9 @@ end
   
 p(codey). rake db:migrate
 
-h4. Users, Sessions, and Logins
+h4(#usl). Users, Sessions, and Logins
+
+"top":#top
 
 * Create the user controller and login action
 
@@ -253,7 +282,9 @@ end
 
 p(codey). before_filter :login_required
 
-h4. List the user's Facebook groups
+h4(#listgroups). List the user's Facebook groups
+
+"top":#top
 
 * To grab the user's Facebook groups, define the default behavior (index) for the group controller. Note that we have some extra code in there that let's the user set a default group, which we will save in the database a little later in the tutorial.	  
 
@@ -283,7 +314,9 @@ p(codey). &lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
 &lt;input id=&quot;def_group&quot; name=&quot;def_group&quot; type=&quot;checkbox&quot; selected=&quot;false&quot; /&gt; Default group &lt;br/&gt;
 &lt;div id=&quot;posts_container&quot; &gt;Posts&lt;/div&gt;
 
-h4. Using JQuery to save the Default Group
+h4(#jquery). Using JQuery to save the Default Group
+
+"top":#top
 
 * We will use JQuery to communicate with Facebook when a user selects their default group using the checkbox.
 
@@ -327,7 +360,9 @@ p(codey). def set_default
 &nbsp;render :json => { :result => @current_user.update_attributes(:default_group => params['id'] == 'nil' ? nil : params['id']) }
 end
 
-h4. Showing posts
+h4(#showposts). Showing posts
+
+"top":#top
 
 * Lets use nested resources to relate groups and posts. Open your config/routes.rb file and add the following:
 	
@@ -381,7 +416,9 @@ p(codey). $('#posts_container').load('/groups/<%=@default_group%>/posts',  funct
 &nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
 });
 
-h4. Get Group Messages, and Profile pictures using Mogli
+h4(#mogli). Get Group Messages, and Profile pictures using Mogli
+
+"top":#top
 
 * Mogli is a Ruby Gem that is installed with Facebookr2 as one of its dependencies. It is the Facebook Open Graph Library for Ruby. You can read more about Open Graph "here":http://developers.facebook.com/docs/opengraph/. In a nuthsell, Open Graph lets Ruby developer integrate their websites with Facebook, so that users don't have to visit Facebook to interact with it. We use Mogli to retrieve the posts for the selected group, as well as attributes like profile pictures.
 
@@ -412,7 +449,9 @@ p(codey). &lt;% @posts.each do |post| %&gt;
 &nbsp;&lt;% end %&gt;
 &lt;% end %&gt;	 
 
-h4. Post Messages to Facebook
+h4(#postmess). Post Messages to Facebook
+
+"top":#top
 
 * At the top of the page (above the code you just inserted), create a link to post a new message in @app/views/posts/index.rb@:
 
@@ -461,7 +500,9 @@ end
 
 p(codey). rackup
 
-h4. Implementing pagination
+h4(#pagination). Implementing pagination
+
+"top":#top
 
 * The Facebook Graph API return only the first 25 posts at a time. Here, we will provide links to get the next and previous items. First, we implement server side functionality to return json data. We do this by modifying the index method. this in @app/controllers/posts_controller.rb@.
 
@@ -501,7 +542,9 @@ p(codey). &lt;div id="posts_container" &gt;&lt;/div&gt;
 &nbsp;&lt;input type="button" value="Previous" id="prev_btn" class="prvnxt" style="display:none"&gt; &lt;input type="button" value="Next" id="next_btn" class="prvnxt" style="display:none"&gt;
 &lt;/div&gt;
 
-h4. Tying up loose ends
+h4(#looseends). Tying up loose ends
+
+"top":#top
 
 * Let's just check that our JavaScript is doing everything it needs to be in @app/views/groups/index.html.erb@. Gets default group. Check. Loads data. Check. Checks if current is default and marks the checkbox. Hmm, did we overlook that? Ok, well it's below. Send a clicked checkbox to the set_default method in groups controller. Yep.
 
@@ -570,7 +613,9 @@ p(codey). &nbsp;function loadData(rem_url, params) {
 &nbsp;}
 &lt;% end %&gt;
 
-h4. Create the second Facebook app for production.
+h4(#fb2). Creating the second Facebook app for production.
+
+"top":#top
 
 * Go back and create another Facebook application for your production application. Name it the same thing minus the @_development@ bit.
 
@@ -586,6 +631,12 @@ production:
 &nbsp; app_id: your PRODUCTION application id
 &nbsp; secret: your PRODUCTION application secret
 &nbsp; api_key: your PRODUCTION application key
+
+h4.(#deploy) Deploying on Engine Yard
+
+"top":#top
+
+
 
 
 
