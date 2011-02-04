@@ -4,7 +4,7 @@ These steps show you how to build a the Group Hug Rails application and deploy i
 
 h4. A little Warning
 
-Before you start this tutorial, you really, really, truly, deeply, sorta, kinda have to login to the application and use it. After using it, you will be able to conceptualize what you are building. Constructing a car without having driven one puts a lot of pedestrians at risk.
+Before you start this tutorial, you really, really, truly, deeply, sorta, kinda have to login to the application and use it. It's the only way to understand what you will be building.
 
 h4. Install Ruby, Rails, and create the app
 
@@ -367,11 +367,11 @@ p(codey). function loadData(rem_url, params) {
 &nbsp;});
 }
 
-p(clues). The Facebook magic in this JQuery script is well documented at the Facebook Developer "here:":http://developers.facebook.com/docs/reference/javascript/fb.xfbml.parse/
+p(clues). The Facebook magic in this JQuery script is well documented at the Facebook Developer page "here:":http://developers.facebook.com/docs/reference/javascript/fb.xfbml.parse/
 
-* Finally, still the same page, we add some code that will display the default group when the page loads:
+* Finally, we add some code (same page still) that will display the default group when the page loads:
 	  
-p(clues). $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
+p(codey). $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
 &nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
 });
 
@@ -381,8 +381,7 @@ h4. Get Group Messages, and Profile pictures using Mogli
 
 * Here, we grab messages for the selected group @app/controllers/posts_controller.rb@. 
 
-p(codey).
-def index    
+p(codey). def index    
 &nbsp;@group = Mogli::Group.new({:id=>params['group_id']}, current_facebook_client)
 &nbsp;@group.fetch
 &nbsp;#getting posts for page 0
@@ -392,8 +391,7 @@ end
 
 * Then we show the messages, along with facebook profile pics in  @app/views/posts/index.rb@:
 
-p(codey).	 
-&lt;% @posts.each do |post| %&gt;
+p(codey). &lt;% @posts.each do |post| %&gt;
 &nbsp;&lt;% begin %&gt;
 &nbsp;&nbsp;&lt;div class="post"&gt;
 &nbsp;&nbsp;&lt;span class="pic"&gt;&lt;fb:profile-pic uid="&lt;%=post.from.id if post.from !=nil%&gt;" linked="false" size="q"&gt;&lt;/fb:profile-pic&gt;&lt;br/&gt;
@@ -408,28 +406,24 @@ p(codey).
 &nbsp;&lt;% end %&gt;
 &lt;% end %&gt;	 
 
+h4. Post Messages to Facebook
+
 * At the top of the page (above the code you just inserted), create a link to post a new message in @app/views/posts/index.rb@:
 
-p(codey).	 
-&lt;%= link_to "Post", url_for(new_group_post_path(@group.id)) %&gt;	
+p(codey). &lt;%= link_to "Post", url_for(new_group_post_path(@group.id)) %&gt;	
 	
-* 19. Display form to post message to group in @app/controllers/posts_controller.rb@. PostsController get current group to display name:
+* Before we display a form to post messages to Facebook groups, we need to figure out which group is the currently selected one. We do this on @app/controllers/posts_controller.rb@.
 
-p(codey).	 
-def new
+p(codey). def new
 &nbsp;@group = Mogli::Group.new({:id=&gt;params['group_id']}, current_facebook_client)
 &nbsp;@group.fetch
 end
 
-* and simple view.see in @app/views/posts/new.rb@ :
+* Then we create a simple view for new posts in @app/views/posts/new.rb@:
 
-p(codey).	 	
-&lt;h1&gt;Post a wall message to: &lt;%= @group.name %&gt;&lt;/h1&gt;
-
+p(codey). &lt;h1&gt;Post a wall message to: &lt;%= @group.name %&gt;&lt;/h1&gt;
 &lt;% form_tag  url_for(group_posts_path(@group.id)), :method=&gt;:post do -%&gt;
-  
 &nbsp;&lt;%= hidden_field_tag 'group_id', @group.id %&gt;
-  
 &nbsp;&lt;div class="field"&gt;
 &nbsp;&nbsp;&lt;%= text_area_tag 'message', nil, :rows =&gt; 10, :cols =&gt; 60 %&gt;
 &nbsp;&lt;/div&gt;
@@ -440,7 +434,6 @@ p(codey).
 &nbsp;&nbsp;&lt;%= submit_tag 'Save' %&gt;
 &nbsp;&lt;/div&gt;
 &lt;% end -%&gt;
- 
 &lt;%= link_to 'Back', url_for(groups_path) %&gt;
 
 * 20. Form submited to create action in @app/controllers/posts_controller.rb@
