@@ -346,8 +346,7 @@ $('#group').bind('change', function() {
 
 * In the same page ( @app/views/groups/index.html.erb@ ) create another function to load the data
 
-p(codey).
-function loadData(rem_url, params) {
+p(codey). function loadData(rem_url, params) {
 &nbsp;var temp = rem_url; 
 &nbsp;if (params != null ) {
 &nbsp;&nbsp;temp += '?' + params;
@@ -370,10 +369,9 @@ function loadData(rem_url, params) {
 
 p(clues). The Facebook magic in this JQuery script is well documented at the Facebook Developer "here:":http://developers.facebook.com/docs/reference/javascript/fb.xfbml.parse/
 
-* Finally, on the same page, we add some code that will display the default group when the page loads:
+* Finally, still the same page, we add some code that will display the default group when the page loads:
 	  
-p(clues).
-$('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
+p(clues). $('#posts_container').load('/groups/<%=@default_group%>/posts',  function() {
 &nbsp;FB.XFBML.parse(document.getElementById('posts_container'));
 });
 
