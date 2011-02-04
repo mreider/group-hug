@@ -240,17 +240,15 @@ end
 
 * Add some HTML and embedded ruby to this view. This creates a select box of all the groups the user has on Facebook.
 
-p(codey).<pre><select name="group" id="group">
-		<% @groups.each do |group| %>
-		 <option value="<%=group.id%>" <%= 'selected' if @default_group == group.id %>><%=group.name%></option>
-		<% end %>
-		</select>
-
-		<br/>
-		<input id="def_group" name="def_group" type="checkbox" selected="false" /> Default group <br/>
-
-		<div id="posts_container" >Posts</div>
-		</pre>
+p(codey).&lt;select name=&quot;group&quot; id=&quot;group&quot;&gt;
+&lt;% @groups.each do |group| %&gt;
+&lt;option value=&quot;&lt;%=group.id%&gt;&quot; &lt;%= 'selected' if @default_group == group.id %&gt;&gt;&lt;%=group.name%&gt;&lt;/option&gt;
+&lt;% end %&gt;
+&lt;/select&gt;
+&lt;br/&gt;
+&lt;input id=&quot;def_group&quot; name=&quot;def_group&quot; type=&quot;checkbox&quot; selected=&quot;false&quot; /&gt; Default group &lt;br/&gt;
+&lt;div id=&quot;posts_container&quot; &gt;Posts&lt;/div&gt;
+		
 	
 12. Install jQuery via instructions at https://github.com/lleger/Rails-3-jQuery/ 
 
