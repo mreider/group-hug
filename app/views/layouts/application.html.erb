@@ -47,7 +47,7 @@
 							# to access the user's facebook email and birthday, groups,read_stream
 							%>
 							<div class="clues">
-							Learning Rails is easiest if it is done in the context of a real application. Group Hug is a simple Rails application (written by Sergey Kornitsky and Matt Reider), that can help you learn how Rails works. The README file, printed below, serves as a tutorial on how to build Group Hug from scratch.<p>&nbsp;<p>The Group Hug application has a few simple requirements. Facebook users can login to Group Hug. Users can choose from their Facebook Groups. Users can post messages to their groups. That's it!
+							Learning Rails is easiest if it is done in the context of a real application. Group Hug is a simple Rails application (written by Sergey Kornitsky and Matt Reider), that can help you learn how Rails works. The README file, printed below, serves as a tutorial on how to build Group Hug from scratch.<br><br>The Group Hug application has a few simple requirements. Facebook users can login to Group Hug. Users can choose from their Facebook Groups. Users can post messages to their groups. That's it!
 							</div>
 							<br clear="left"><table><tr><td><%= fb_login_and_redirect( url_for(:action => 'create', :controller => 'user', :only_path => false),:perms => 'email,user_birthday,user_groups,read_stream, publish_stream') %></td><td>to try the group hug application + post messages<td></tr></table> 
 							<% end %>
