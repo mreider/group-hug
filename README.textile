@@ -637,10 +637,3 @@ h4(#deploy). Deploying on Engine Yard
 * Go to the Engine Yard home page and watch the "Tour of the Engine Yard Cloud":http://www.engineyard.com/pv/17825326 video
 
 * We will expand this section in upcoming weeks.
-
-
-
-
-
-
-
