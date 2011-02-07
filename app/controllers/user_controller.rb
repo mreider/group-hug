@@ -36,5 +36,11 @@ class UserController < ApplicationController
 
   def prereqs
   end
+  
+  def privacy
+  end
+  
+  def tos
+  end
 
 end

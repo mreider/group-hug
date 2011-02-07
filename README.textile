@@ -6,7 +6,7 @@ h4. Table of Contents
 
 # "Install Ruby, Rails, and create the app":#install
 # "Create a Facebook application":#facebook
-# "Configure Facebooker in Rails":#configFB
+# "Configure Facebooker in Rails":#configfb
 # "Creating the Layout":#layout
 # "Adding the Facebook Connect button":#fbconnect
 # "Tying in the database":#database
@@ -39,9 +39,13 @@ p(codey). curl -O -L http://rvm.beginrescueend.com/src/bootstrap_rails_environme
 
 p(codey). rails new grouphug
 
+* Switch to the grouphug directory
+
+p(codey). cd grouphug
+
 * Install facebooker2 as a plugin. This is a popular library for interfacing Rails applications with Facebook. "The github for Facebookr2 is here":https://github.com/mmangino/facebooker2
 
-p(codey). script/rails plugin install git://github.com/mmangino/facebooker2.git
+p(codey). rails plugin install git://github.com/mmangino/facebooker2.git
 
 p(clues). *What's a plugin?* Watch a  screen cast by Ryan Bigg
 
@@ -63,7 +67,7 @@ h4(#facebook). Create a Facebook application
 
 !http://icanhazrails.com/images/wurl.png(fb website settings)!
 
-h4(#ConfigFB). Configure Facebooker in Rails
+h4(#configfb). Configure Facebooker in Rails
 
 "top":#top
 
