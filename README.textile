@@ -47,8 +47,6 @@ p(codey). cd grouphug
 
 p(codey). rails plugin install git://github.com/mmangino/facebooker2.git
 
-p(clues). *What's a plugin?* Watch a  screen cast by Ryan Bigg
-
 p(clues). *What's Facebooker2* Watch a screen cast by Christopher Johnson
 
 h4(#facebook). Create a Facebook application
@@ -63,7 +61,7 @@ h4(#facebook). Create a Facebook application
 
 * Click Create App
 
-* Go to the Website settings, and set the site URL to the IP address of your computer.
+* Go to the Website settings, and set the site URL to the IP address of your computer, along with port 3000, which is the port that Rails uses for its test server. _Note: make sure, if you are on a wireless network, that your firewall settings, and IP / Port forwarding are properly configured._
 
 !http://icanhazrails.com/images/wurl.png(fb website settings)!
 
@@ -75,9 +73,13 @@ h4(#configfb). Configure Facebooker in Rails
 
 !http://icanhazrails.com/images/appsettings.png(fb app settings)!
 
-* Create @config/facebooker.yml@ and paste the settings from your application page as follows:
+* Create @config/facebooker.yml@ and paste the settings from your application page as follows (for now keep the production and development settings the same. You will change the production settings when you deploy).
 
 p(codey). development:
+&nbsp; app_id: your application id
+&nbsp; secret: your application secret
+&nbsp; api_key: your application key
+production:
 &nbsp; app_id: your application id
 &nbsp; secret: your application secret
 &nbsp; api_key: your application key
@@ -86,33 +88,29 @@ p(codey). development:
 
 p(codey). Facebooker2.load_facebooker_yaml
 
-p(clues). *What's YAML?* Watch a screen cast by Matt Reider
-
 * Add the following line to @app/controllers/application_controller.rb@
 
 p(codey). include Facebooker2::Rails::Controller
-
-p(clues). *What's a Controller?* Watch a screen cast by Ryan Bigg
 
 h4(#layout). Creating the Layout
 
 "top":#top
 
-* In rails, there is a special Layout in @app/views/layouts/application.html.erb@. This file will be sent to the browser no matter what page is sent. It's the perfect place to put headers and footers. Place some standard HTML in that file, and include the Ruby @yield@ method as the placeholder for running the actual page that was requested.
+* In rails, there is a special Layout in @app/views/layouts/application.html.erb@. This file will be sent to the browser no matter what page is sent. It's the perfect place to put headers and footers. There is already some standard HTML in that file, placeholders for style sheets, javascript, metatags, and a  Ruby @yield@ method as the placeholder for running the actual page that was requested.
 
-p(clues). *What's a Layout?* Watch a screen cast by Ryan Bigg
-
-p(codey). &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
-&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+p(codey). &lt;!DOCTYPE html&gt;
+&lt;html&gt;
 &lt;head&gt;
-&lt;title&gt;An XHTML 1.0 Strict standard template&lt;/title&gt;
-&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot; /&gt;
+&lt;title&gt;Grouphug&lt;/title&gt;
+&lt;%= stylesheet_link_tag :all %&gt;
+&lt;%= javascript_include_tag :defaults %&gt;
+&lt;%= csrf_meta_tag %&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;%= yield %&gt;
 &lt;/body&gt;
 &lt;/html&gt;
+
 
 h4(#fbconnect). Adding the Facebook Connect button
 
@@ -144,8 +142,6 @@ p(clues). *What's a Model?* Watch a screen cast by Ryan Bigg
 * Then create a database migration file by typing
 
 p(codey). rails generate migration create_users
-
-p(clues). *What's a Database Migration?* Watch a screen cast by Ryan Bigg
 
 This creates a file in the folder @db/migrate/@ named something like @20110203050933_create_users.rb@
 
@@ -266,8 +262,6 @@ end
 	  
 * Next, we make the above code a helper method. This is a bit of trickery in that usually helper methods are created in their own files under the helpers directory and are more useful in views, rather than controllers, because they are visual. We will create non-tricky helper methods in a few minutes. This tricky one is turned into a helper method using the @helper_method@ method.
 
-p(clues). *What's a Helper Method?* Watch a screen cast by Ryan Bigg
-
 p(codey). helper_method :current_user
 
 * Also in the ApplicationController is a method for checking if the user is logged in.
@@ -372,8 +366,6 @@ p(codey). resources :groups do
 &nbsp;resources :posts
 end
 
-p(clues). *What's a Nested Resource?* See this screencast by Danish Khan
-	
 * Using JQuery, we will bind the select list to the post container, meaning that every time the select box is changed, the inner html of the post container will be replaced with messages from that Facebook group.  
 
 * We put this code in the document.ready block, underneath the code you wrote a few steps ago in @app/views/groups/index.html.erb@
