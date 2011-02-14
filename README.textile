@@ -1,6 +1,6 @@
 h3(#top). Building the Group Hug Rails app
 
-These steps show you how to build a the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view some helpful "screencasts here":http://engineyard.com/university. 
+These steps show you how to build the Group Hug Rails application and deploy it on the Engine Yard Cloud. If you prefer video over written tutorials, you can view some helpful "screencasts here":http://engineyard.com/university. 
 
 h4. Table of Contents
 
